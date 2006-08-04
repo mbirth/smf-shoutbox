@@ -1,10 +1,12 @@
 <?php
 
 function template_shout_box() {
-	global $context, $settings, $options, $txt, $user_info, $scripturl, $modSettings, $forum_version, $sourcedir;
+	global $context, $settings, $options, $txt, $user_info, $scripturl, $modSettings,
+	       $forum_version, $sourcedir, $boarddir, $boardurl;
 	
 	$themedir = $settings['default_theme_url'];
 	$imgdir = $themedir."/images/";
+	$sourceurl = str_replace($boarddir, $boardurl, $sourcedir);
 
 	echo '
 	<script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
@@ -23,35 +25,39 @@ function template_shout_box() {
 			<table border="0" width="100%" cellspacing="1" cellpadding="4" class="bordercolor">
 				<tr class="windowbg" align="right" style="width:13%">
 					<td class="windowbg" style="width:87%">
-						<form name="sbox" action="Sources/sboxDB.php?action=write" method="post" target="sboxframe" onsubmit="setTimeout(\'clearSbox()\', 500);">
-						  <input type="hidden" name="ts" value="'.forum_time(true).'">
-							<table width="100%" border="0" cellspacing="1" cellpadding="0">
-								<tr>
-									<td align="right">
-     									<a href="Sources/sboxDB.php?" target="sboxframe"><img src="'.$imgdir.'sbox_refresh.gif" border="0" width="16" height="17" align="middle" alt="' . $txt['sbox_Refresh'] . '" /></a>';
-	if ((!$context['user']['is_guest']) || ($modSettings['sbox_GuestAllowed'] == "1"))
-	echo '
+						<table width="100%" border="0" cellspacing="1" cellpadding="0">
+							<tr>
+								<td align="right">
+     	  					<form name="sbox" action="' . $sourceurl . '/sboxDB.php?action=write" method="post" target="sboxframe" style="margin: 0;" onsubmit="setTimeout(\'clearSbox()\', 500);">
+   									<a href="' . $sourceurl . '/sboxDB.php?" target="sboxframe"><img src="'.$imgdir.'sbox_refresh.gif" border="0" width="16" height="17" align="middle" alt="' . $txt['sbox_Refresh'] . '" /></a>';
+	if ((!$context['user']['is_guest']) || ($modSettings['sbox_GuestAllowed'] == "1")) {
+	  echo '
+			      			  <input type="hidden" name="ts" value="'.forum_time(true).'">
 										<input class="windowbg2" type="text" name="sboxText" size="100" maxlength="320" />&nbsp;<input type="submit" class="input" value="&nbsp;shout&nbsp;" />';
-	echo '
-									</td>
-								</tr>';
+	}
+  echo '
+          				</form>
+								</td>
+							</tr>';
 
 	if (($modSettings['sbox_SmiliesVisible'] == "1") && ((!$context['user']['is_guest']) || ($modSettings['sbox_GuestAllowed'] == "1")))	{
     sbox_loadSmileys();
     echo '
-                <tr>
-                  <td align="center">';
+              <tr>
+                <td align="center">';
     sbox_printSmileys();
+    echo '
+                </td>
+              </tr>';
 	}
 
   echo'
-								<tr>
-									<td>
-			     						<iframe name="sboxframe" src="Sources/sboxDB.php?" width="100%" height="'.$modSettings['sbox_Height'].'"></iframe>
-									</td>
-								</tr>
-							</table>
-    				</form>
+							<tr>
+								<td>
+	     						<iframe name="sboxframe" src="' . $sourceurl . '/sboxDB.php?" width="100%" height="'.$modSettings['sbox_Height'].'"></iframe>
+								</td>
+							</tr>
+						</table>
   				</td>
   			</tr>
   		</table>

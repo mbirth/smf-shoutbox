@@ -47,7 +47,7 @@ else
 
 	if ((isset($_REQUEST['man'])) || (!isset($db_name)))
 	{
-		include_once ("Settings.php");
+		require_once (dirname(realpath($_SERVER['SCRIPT_FILENAME'])) . "/Settings.php");
 		$dbcon = mysql_connect($db_server, $db_user, $db_passwd);
 		mysql_select_db($db_name);
 	}
