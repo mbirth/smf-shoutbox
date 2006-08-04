@@ -3,7 +3,7 @@ SMF Shoutbox
 </id>
 
 <version>
-1.04
+1.10
 </version>
 
 <mod info>
@@ -23,13 +23,28 @@ Instructions:
 If you really want to install this mod manually, please use this file as a "how to".
 
 Author:
-The SMF shoutbox was written by Deep, some code ist "stolen" from Matthew Wolf (a.k.a Grudge).
+The SMF shoutbox was originally written by Deep, some code ist "stolen" from Matthew Wolf (a.k.a Grudge).
+The current version was heavily improved by Markus Birth.
 Thanks a lot, Grudge!
 
 Please direct any questions regarding this version to Deep, either by email (diem4@gmx.net) or by posting
 in the appropriate place at www.simplemachines.org (the preferred option!)
 
 History:
+Version 1.10
+1. sequential messages from one user have the same color
+2. character limit for one shout has been raised to 320 chars (like one long SMS ;-)
+3. displayed weekdays are now in the language the user has chosen in SMF and from SMF's language files
+4. sBox-time is kept in sync with SMF's time (including all timezone-stuff)
+5. there's a bar displayed showing what's new since the last refresh
+6. poster's name can be clicked to show his profile
+7. no HTML allowed
+8. your own nick is made bold and a sound is played on first occurence
+9. sbox now uses SMF's smileys and BBCode, option in settings shows the smiley-row known from posting messages in SMF
+10. now user's "Display Name"s are shown instead of usernames
+!! There's some experimental code commented out - maybe someone will make it work some day. It's
+!! for showing who's viewing the shoutbox and for giving each user a specific unique distinguishable color.
+
 version 1.04
 1. font family is now adjustable
 2. german language pack extracted
@@ -56,7 +71,7 @@ Original Version
 </mod info>
 
 <author>
-Deep
+Deep and Markus Birth
 </author>
 
 <homepage>
@@ -72,65 +87,14 @@ $languagedir/Modifications.english.php
 </search for>
 
 <add before>
+
 //SMF Shoutbox
 $txt['sbox_ModTitle'] = 'SMF Shoutbox';
 $txt['sbox_Visible'] = 'Shoutbox is visible';
 $txt['sbox_GuestAllowed'] = 'Guests are allowed to shout';
 $txt['sbox_MaxLines'] = 'Maximum number of displayed lines';
 $txt['sbox_Height'] = 'Shoutbox height';
-$txt['sbox_SmiliesVisible'] = 'Smilie window is visible';
-$txt['sbox_smilie01_text'] = 'blblbl!';
-$txt['sbox_smilie02_text'] = 'grinning';
-$txt['sbox_smilie03_text'] = 'laughing';
-$txt['sbox_smilie04_text'] = 'kissing';
-$txt['sbox_smilie05_text'] = 'smiling';
-$txt['sbox_smilie06_text'] = 'that´s okay!';
-$txt['sbox_smilie07_text'] = 'smoking';
-$txt['sbox_smilie08_text'] = 'greeting';
-$txt['sbox_smilie09_text'] = 'cheerio!';
-$txt['sbox_smilie10_text'] = 'oops';
-$txt['sbox_smilie11_text'] = 'praying';
-$txt['sbox_smilie12_text'] = 'crying';
-$txt['sbox_smilie13_text'] = 'angry';
-$txt['sbox_smilie14_text'] = 'baaaaaad';
-$txt['sbox_smilie15_text'] = 'headbanging';
-$txt['sbox_smilie01_code'] = ':frech:';
-$txt['sbox_smilie02_code'] = ';-)';
-$txt['sbox_smilie03_code'] = ':-]';
-$txt['sbox_smilie04_code'] = ':-s';
-$txt['sbox_smilie05_code'] = ':-)';
-$txt['sbox_smilie06_code'] = ':-!';
-$txt['sbox_smilie07_code'] = ':smoking:';
-$txt['sbox_smilie08_code'] = ':greeting:';
-$txt['sbox_smilie09_code'] = ':cheerio:';
-$txt['sbox_smilie10_code'] = ':-O';
-$txt['sbox_smilie11_code'] = ':praying:';
-$txt['sbox_smilie12_code'] = ':crying:';
-$txt['sbox_smilie13_code'] = ':-(';
-$txt['sbox_smilie14_code'] = ':bad:';
-$txt['sbox_smilie15_code'] = ':bang:';
-$txt['sbox_smilie01_file'] = 'sbox_funny.gif';
-$txt['sbox_smilie02_file'] = 'sbox_grin.gif';
-$txt['sbox_smilie03_file'] = 'sbox_laugh.gif';
-$txt['sbox_smilie04_file'] = 'sbox_kiss.gif';
-$txt['sbox_smilie05_file'] = 'sbox_smile.gif';
-$txt['sbox_smilie06_file'] = 'sbox_yeah.gif';
-$txt['sbox_smilie07_file'] = 'sbox_smoke.gif';
-$txt['sbox_smilie08_file'] = 'sbox_hand.gif';
-$txt['sbox_smilie09_file'] = 'sbox_cheerio.gif';
-$txt['sbox_smilie10_file'] = 'sbox_oops.gif';
-$txt['sbox_smilie11_file'] = 'sbox_church.gif';
-$txt['sbox_smilie12_file'] = 'sbox_cry.gif';
-$txt['sbox_smilie13_file'] = 'sbox_angry.gif';
-$txt['sbox_smilie14_file'] = 'sbox_bad.gif';
-$txt['sbox_smilie15_file'] = 'sbox_bang.gif';
-$txt['sbox_Monday'] = 'Monday';
-$txt['sbox_Tuesday'] = 'Tuesday';
-$txt['sbox_Wednesday'] = 'Wednesday';
-$txt['sbox_Thurday'] = 'Thurday';
-$txt['sbox_Friday'] = 'Friday';
-$txt['sbox_Saturday'] = 'Saturday';
-$txt['sbox_Sunday'] = 'Sunday';
+$txt['sbox_SmiliesVisible'] = 'Smiley row is visible';
 $txt['sbox_KillShout'] = 'Dou you want to kill this shout?';
 $txt['sbox_TextSize1'] = '1. Font size';
 $txt['sbox_TextColor1'] = '1. Font color';
@@ -140,6 +104,7 @@ $txt['sbox_RefreshTime'] = 'Refresh time';
 $txt['sbox_BackgroundColor'] = 'Background color';
 $txt['sbox_FontFamily1'] = '1. Font family';
 $txt['sbox_FontFamily2'] = '2. Font family';
+$txt['sbox_Refresh'] = 'Refresh';
 </add before>
 
 
@@ -152,12 +117,13 @@ $languagedir/Help.english.php
 </search for>
 
 <add before>
+
 //SMF Shoutbox
-$helptxt['sbox_Visible'] = 'Here you can decide wether the shoutbox is visible or not,';
-$helptxt['sbox_GuestAllowed'] = 'Here you can decide wether the shoutbox smilies are visible or not';
-$helptxt['sbox_MaxLines'] = 'Here you can enter the maximal count of lines display by shoutbox.';
+$helptxt['sbox_Visible'] = 'Here you can decide wether the shoutbox is visible at all or not.';
+$helptxt['sbox_GuestAllowed'] = 'Here you can decide whether guests are allowed to post new shouts.';
+$helptxt['sbox_MaxLines'] = 'Here you can enter the maximal count of lines displayed in the shoutbox.';
 $helptxt['sbox_Height'] = 'Here you can enter the height (pixels) of the shoutbox.';
-$helptxt['sbox_SmiliesVisible'] = 'Here you can decide wether smilies are visible or not.';
+$helptxt['sbox_SmiliesVisible'] = 'Here you can decide whether smileys are visible or not. They work independently of this setting.';
 $helptxt['sbox_TextSize1'] = 'Here you can adjust the 1. font size';
 $helptxt['sbox_TextColor1'] = 'Here you can adjust the 1. font color';
 $helptxt['sbox_TextSize2'] = 'Here you can adjust the 2. font size';
@@ -365,64 +331,3 @@ $themedir/index.template.php
 
 </add after>
 
-<edit file>
-$themedir/script.js
-</edit file>
-
-<search for>
-	doForm.admin_hash_pass.value = hex_sha1(hex_sha1(username.toLowerCase() + doForm.admin_pass.value) + cur_session_id);
-	doForm.admin_pass.value = doForm.admin_pass.value.replace(/./g, "*");
-}
-</search for>
-
-<add after>
-
-function clearSbox()
-{
-	// Delete shoutbox message text after shout has been submitted
-	if (document.sbox)
-		document.sbox.sboxText.value="";
-}
-
-function insertSmilie(smilieCode)
-{
-	// insert smilie code into shoutbox text
-	if (document.sbox)
-	{
-		var smilie = " " + smilieCode;
-		var sboxText = document.sbox.sboxText;
-
-	  	if (sboxText.textLength) 
-		  	if (sboxText.textLength >= 0) 
-		  	{
-				sboxText.focus();
-				var startSelection = sboxText.selectionStart;
-				var endSelection = sboxText.textLength;
-				sboxText.value = sboxText.value.substring(0,startSelection) + smilie + sboxText.value.substring(sboxText.selectionEnd,endSelection);
-				sboxText.selectionStart = startSelection;
-				sboxText.selectionEnd = startSelection;
-				sboxText.selectionStart = sboxText.selectionStart + smilie.length;
-				return;
-			}
-		var browser = navigator.userAgent.toLowerCase();
-		var browserInternetExplorer = ((browser.indexOf("msie") != -1)  && (browser.indexOf("opera") == -1));
-		var platformWindows = ((browser.indexOf("win")!=-1) || (browser.indexOf("16bit")!=-1));
-		if (browserInternetExplorer && platformWindows && (parseInt(navigator.appVersion) >= 4)) 
-		{
-			if(sboxText.isTextEdit)
-			{
-				sboxText.focus();
-				var selection = document.selection;
-				var range = selection.createRange();
-				range.colapse;
-				if (range != null && (selection.type == "Text" || selection.type == "None"))
-					range.text = smilie;
-				return;
-			}
-		}
-   		sboxText.value += smilie;	
-		sboxText.focus();	
-	}
-}
-
-</add after>

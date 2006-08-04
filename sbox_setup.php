@@ -60,12 +60,12 @@ else
 	
 	// Now time to make the new table	
 	$result = mysql_query("
-  			CREATE TABLE {$db_prefix}sbox_content
-  			(id int(11) NOT NULL auto_increment, 
-  			time varchar(25) NOT NULL default '',
-  			name varchar(80) NOT NULL default '',
-    			content text NOT NULL,
-    			PRIMARY KEY (id)) TYPE=MyISAM;");
+  			CREATE TABLE `{$db_prefix}sbox_content` (
+  			`id` int(11) unsigned NOT NULL auto_increment, 
+  			`time` int(10) unsigned NOT NULL,
+  			`ID_MEMBER` mediumint(8) unsigned NOT NULL,
+    			`content` text NOT NULL,
+    			PRIMARY KEY (`id`)) ENGINE=MyISAM;");
 	if (!$result)
 	{
    		echo "<font color=red>Error creating shoutbox table. SQL Error: ".mysql_error()."</font><BR />";
@@ -77,17 +77,17 @@ else
 	$toSet = array();
 	$toSet['sbox_Visible'] = '1';
 	$toSet['sbox_GuestAllowed'] = '0';
-	$toSet['sbox_MaxLines'] = '30';
-	$toSet['sbox_Height'] = '180';
 	$toSet['sbox_SmiliesVisible'] = '1';
-	$toSet['sbox_TextSize1'] = 'x-small';
-	$toSet['sbox_TextColor1'] = '#123456';
-	$toSet['sbox_TextSize2'] = 'x-small';
-	$toSet['sbox_TextColor2'] = '#000000';
+	$toSet['sbox_MaxLines'] = '50';
+	$toSet['sbox_Height'] = '180';
 	$toSet['sbox_RefreshTime'] = '20';
-	$toSet['sbox_BackgroundColor'] = '#E5E5E8';
 	$toSet['sbox_FontFamily1'] = 'Verdana, sans-serif';
 	$toSet['sbox_FontFamily2'] = 'Verdana, sans-serif';
+	$toSet['sbox_TextSize1'] = 'xx-small';
+	$toSet['sbox_TextColor1'] = '#000000';
+	$toSet['sbox_TextSize2'] = 'xx-small';
+	$toSet['sbox_TextColor2'] = '#476c8e';
+	$toSet['sbox_BackgroundColor'] = '#E5E5E8';
 
 	// Insert settings
 	foreach ($toSet as $key => $value)
