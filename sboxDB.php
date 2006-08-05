@@ -29,7 +29,9 @@ echo '<html xmlns="http://www.w3.org/1999/xhtml"' . ($context['right_to_left']?'
     }
 
     // get SMF-time including time zone corrections (system+user)
-    parent.document.sbox.ts.value = ' . forum_time(true) . ';
+    if (parent && parent.document.sbox.ts) {
+      parent.document.sbox.ts.value = ' . forum_time(true) . ';
+    }
     // if (parent.document.sbox.ts.value != ' . forum_time(true) . ') alert(\'Time mismatch! (\'+parent.document.sbox.ts.value+\' / ' . forum_time(true) . ')\');
     // ]]></script>
 

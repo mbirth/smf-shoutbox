@@ -27,9 +27,9 @@ function template_shout_box() {
 					<td class="windowbg" style="width:87%">
 						<table width="100%" border="0" cellspacing="1" cellpadding="0">
 							<tr>
-								<td align="right">
+								<td align="right" valign="middle">
      	  					<form name="sbox" action="' . $sourceurl . '/sboxDB.php?action=write" method="post" target="sboxframe" style="margin: 0;" onsubmit="setTimeout(\'clearSbox()\', 500);">
-   									<a href="' . $sourceurl . '/sboxDB.php?" target="sboxframe"><img src="'.$imgdir.'sbox_refresh.gif" border="0" width="16" height="17" align="middle" alt="' . $txt['sbox_Refresh'] . '" /></a>';
+   									<a href="' . $sourceurl . '/sboxDB.php?" target="sboxframe"><img src="'.$imgdir.'sbox_refresh.gif" border="0" width="16" height="17" align="absmiddle" alt="' . $txt['sbox_Refresh'] . '" /></a>';
 	if ((!$context['user']['is_guest']) || ($modSettings['sbox_GuestAllowed'] == "1")) {
 	  echo '
 			      			  <input type="hidden" name="ts" value="'.forum_time(true).'">
@@ -54,7 +54,7 @@ function template_shout_box() {
   echo'
 							<tr>
 								<td>
-	     						<iframe name="sboxframe" src="' . $sourceurl . '/sboxDB.php?" width="100%" height="'.$modSettings['sbox_Height'].'"></iframe>
+	     						<iframe name="sboxframe" src="' . $sourceurl . '/sboxDB.php?" width="100%" height="'.$modSettings['sbox_Height'].'" frameborder="0" style="border: 2px ridge silver;"></iframe>
 								</td>
 							</tr>
 						</table>
