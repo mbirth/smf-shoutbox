@@ -11,9 +11,6 @@ if (!defined('SMF'))
 // global variables
 global $db_connection, $context, $settings, $txt, $user_info, $modSettings, $db_prefix;
 
-// used in test scenario
-//@mysql_select_db($db_name, $db_connection);
-
 //display html header
 echo '<html xmlns="http://www.w3.org/1999/xhtml"' . ($context['right_to_left']?' dir="rtl"':'') . '>
 <head>
@@ -67,7 +64,7 @@ echo '<html xmlns="http://www.w3.org/1999/xhtml"' . ($context['right_to_left']?'
 switch ($_REQUEST['action']) {
  
   case 'write':
-    if  (((!$context['user']['is_guest']) || ($modSettings['sbox_GuestAllowed'] == "1")) && !empty($_REQUEST['sboxText'])) {
+    if  (((!$context['user']['is_guest']) || ($modSettings['sbox_GuestAllowed'] == '1')) && !empty($_REQUEST['sboxText'])) {
       $content=$_REQUEST['sboxText'];
       // get current timestamp
       $date = time();
@@ -134,7 +131,9 @@ if(mysql_num_rows($result)) {
     $date = forum_time(true, $row['time']);           // shouting date and time
     $content = stripslashes($row['content']); // shouting content
     $content = htmlentities($content);
-    $content = parse_bbc($content);
+    if ($modSettings['sbox_AllowBBC'] == '1') {
+      $content = parse_bbc($content);
+    }
 
     if (!empty($_REQUEST['ts']) && !$div && $date<$_REQUEST['ts']) {
       if ($count > 0) {

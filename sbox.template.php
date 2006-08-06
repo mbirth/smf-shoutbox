@@ -7,16 +7,35 @@ function template_shout_box() {
 	$themedir = $settings['default_theme_url'];
 	$imgdir = $themedir."/images/";
 	$sourceurl = str_replace($boarddir, $boardurl, $sourcedir);
+	
+	if ($context['user']['is_guest'] && $modSettings['sbox_GuestVisible'] != '1') return;
 
 	echo '
-	<script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
-  	function clearSbox()
-    {
-    	// Delete shoutbox message text after shout has been submitted
-    	if (document.sbox)
-    		document.sbox.sboxText.value="";
-    }
-	// ]]></script>
+	  <script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
+			var current_header_sb = ' . ((empty($options['collapse_header_sb']))?'false':'true') . ';
+
+			function shrinkHeaderSB(mode) {';
+
+	if ($context['user']['is_guest']) {
+		echo '
+				document.cookie = "upshrinkSB=" + (mode ? 1 : 0);';
+	} else {
+		echo '
+				smf_setThemeOption("collapse_header_sb", mode?1:0, null, "' . $context['session_id'] . '");';
+	}
+
+	echo '
+				document.getElementById("upshrink_sb").src = smf_images_url + (mode ? "/expand.gif" : "/collapse.gif");
+				document.getElementById("upshrinkHeaderSB").style.display = mode ? "none" : "";
+				current_header_sb = mode;
+			}
+
+    	function clearSbox() {
+      	// Delete shoutbox message text after shout has been submitted
+      	if (document.sbox)
+      		document.sbox.sboxText.value="";
+      }
+  	// ]]></script>
 	<div class="tborder"', $context['browser']['needs_size_fix'] && !$context['browser']['is_ie6'] ? ' style="width: 100%;"' : '', '>
 		<div class="catbg" style="padding: 6px; vertical-align: middle; text-align: center;">		
 			<a href="#" onclick="shrinkHeaderSB(!current_header_sb); return false;"><img id="upshrink_sb" src="', $settings['images_url'], '/', empty($options['collapse_header_sp']) ? 'collapse.gif' : 'expand.gif', '" alt="*" title="', $txt['upshrink_description'], '" style="margin-right: 2ex;" align="right" /></a>'.$txt['sbox_ModTitle'].'
@@ -27,7 +46,7 @@ function template_shout_box() {
 					<td class="windowbg" style="width:87%">
 						<table width="100%" border="0" cellspacing="1" cellpadding="0">
 							<tr>
-								<td align="right" valign="middle">
+								<td align="center" valign="middle">
      	  					<form name="sbox" action="' . $sourceurl . '/sboxDB.php?action=write" method="post" target="sboxframe" style="margin: 0;" onsubmit="setTimeout(\'clearSbox()\', 500);">
    									<a href="' . $sourceurl . '/sboxDB.php?" target="sboxframe"><img src="'.$imgdir.'sbox_refresh.gif" border="0" width="16" height="17" align="absmiddle" alt="' . $txt['sbox_Refresh'] . '" /></a>';
 	if ((!$context['user']['is_guest']) || ($modSettings['sbox_GuestAllowed'] == "1")) {

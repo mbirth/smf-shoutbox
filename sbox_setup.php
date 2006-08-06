@@ -21,7 +21,10 @@ $overwrite_old_settings = false;
 $mod_settings = array(
 	'sbox_Visible' => '1',
 	'sbox_GuestAllowed' => '0',
+	'sbox_GuestVisible' => '1',
 	'sbox_SmiliesVisible' => '1',
+	'sbox_AllowBBC' => '1',
+	'sbox_DoHistory' => '0',
 	'sbox_MaxLines' => '50',
 	'sbox_Height' => '180',
 	'sbox_RefreshTime' => '20',
@@ -43,8 +46,6 @@ if (file_exists(dirname(__FILE__) . '/SSI.php') && !defined('SMF'))
 elseif (!defined('SMF'))
 	die('<b>Error:</b> Cannot install - please verify you put this in the same place as SMF\'s index.php.');
 
-
-
 // Turn the array defined above into a string of MySQL data.
 $string = '';
 foreach ($mod_settings as $k => $v)
@@ -61,8 +62,6 @@ if ($string != '')
 // Uh-oh spaghetti-oh!
 if ($result === false)
 	echo '<b>Error:</b> Settings insertion failed!<br />';
-
-
 
 $result = db_query("
   			CREATE TABLE `{$db_prefix}sbox_content` (

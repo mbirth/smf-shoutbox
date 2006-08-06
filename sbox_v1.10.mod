@@ -92,6 +92,7 @@ $languagedir/Modifications.english.php
 $txt['sbox_ModTitle'] = 'SMF Shoutbox';
 $txt['sbox_Visible'] = 'Shoutbox is visible';
 $txt['sbox_GuestAllowed'] = 'Guests are allowed to shout';
+$txt['sbox_GuestVisible'] = 'Make Shoutbox visible to Guests';
 $txt['sbox_MaxLines'] = 'Maximum number of displayed lines';
 $txt['sbox_Height'] = 'Shoutbox height';
 $txt['sbox_SmiliesVisible'] = 'Smiley row is visible';
@@ -104,6 +105,8 @@ $txt['sbox_RefreshTime'] = 'Refresh time';
 $txt['sbox_BackgroundColor'] = 'Background color';
 $txt['sbox_FontFamily1'] = '1. Font family';
 $txt['sbox_FontFamily2'] = '2. Font family';
+$txt['sbox_DoHistory'] = 'Create history of shouts';
+$txt['sbox_AllowBBC'] = 'Allow BBCode';
 $txt['sbox_Refresh'] = 'Refresh';
 </add before>
 
@@ -121,17 +124,13 @@ $languagedir/Help.english.php
 //SMF Shoutbox
 $helptxt['sbox_Visible'] = 'Here you can decide wether the shoutbox is visible at all or not.';
 $helptxt['sbox_GuestAllowed'] = 'Here you can decide whether guests are allowed to post new shouts.';
+$helptxt['sbox_GuestVisible'] = 'Defines whether the Shoutbox is visible to guests at all.';
 $helptxt['sbox_MaxLines'] = 'Here you can enter the maximal count of lines displayed in the shoutbox.';
 $helptxt['sbox_Height'] = 'Here you can enter the height (pixels) of the shoutbox.';
-$helptxt['sbox_SmiliesVisible'] = 'Here you can decide whether smileys are visible or not. They work independently of this setting.';
-$helptxt['sbox_TextSize1'] = 'Here you can adjust the 1. font size';
-$helptxt['sbox_TextColor1'] = 'Here you can adjust the 1. font color';
-$helptxt['sbox_TextSize2'] = 'Here you can adjust the 2. font size';
-$helptxt['sbox_TextColor2'] = 'Here you can adjust the 2. font color';
+$helptxt['sbox_SmiliesVisible'] = 'Here you can decide whether smileys are visible or not. They work independently of this setting, though.';
 $helptxt['sbox_RefreshTime'] = 'Here you can adjust the refresh time';
-$helptxt['sbox_BackgroundColor'] = 'Here you can adjust the background color';
-$helptxt['sbox_FontFamily1'] = 'Here you can adjust the 1. font family.';
-$helptxt['sbox_FontFamily2'] = 'Here you can adjust the 2. font family.';
+$helptxt['sbox_DoHistory'] = 'Defines whether all shouts should be written to a file so that an Administrator can check what was going on.';
+$helptxt['sbox_AllowBBC'] = 'Defines whether users are allowed to use BBCode in shouts. If disabled, only plain text is displayed - no smileys, no formatting.';
 </add before>
 
 
@@ -174,7 +173,10 @@ function ModifySboxSettings()
 	(
 		array('check', 'sbox_Visible'),
 		array('check', 'sbox_GuestAllowed'),
+		array('check', 'sbox_GuestVisible'),
 		array('check', 'sbox_SmiliesVisible'),
+		array('check', 'sbox_AllowBBC'),
+		array('check', 'sbox_DoHistory'),
 		array('int', 'sbox_MaxLines'),
 		array('int', 'sbox_Height'),
 		array('int', 'sbox_RefreshTime'),
@@ -201,15 +203,17 @@ function ModifySboxSettings()
 												),
 			),
 		array('select', 'sbox_TextSize1', array(
-												'8px' => '8xp',
-												'9px' => '9xp',
-												'10px' => '10xp',
-												'11px' => '11xp',
-												'12px' => '12xp',
-												'13px' => '13xp',
-												'14px' => '14xp',
-												'15px' => '15xp',
-												'16px' => '16xp',
+		                    '6pt' => '6pt',
+		                    '7pt' => '7pt',
+												'8pt' => '8pt',
+												'9pt' => '9pt',
+												'10pt' => '10pt',
+												'11pt' => '11pt',
+												'12pt' => '12pt',
+												'13pt' => '13pt',
+												'14pt' => '14pt',
+												'15pt' => '15pt',
+												'16pt' => '16pt',
 												'xx-small' => 'xx-small',
 												'x-small' => 'x-small',
 												'small' => 'small',
@@ -221,15 +225,17 @@ function ModifySboxSettings()
 			),
 		array('text', 'sbox_TextColor1'),
 		array('select', 'sbox_TextSize2', array(
-												'8px' => '8xp',
-												'9px' => '9xp',
-												'10px' => '10xp',
-												'11px' => '11xp',
-												'12px' => '12xp',
-												'13px' => '13xp',
-												'14px' => '14xp',
-												'15px' => '15xp',
-												'16px' => '16xp',
+		                    '6pt' => '6pt',
+		                    '7pt' => '7pt',
+												'8pt' => '8pt',
+												'9pt' => '9pt',
+												'10pt' => '10pt',
+												'11pt' => '11pt',
+												'12pt' => '12pt',
+												'13pt' => '13pt',
+												'14pt' => '14pt',
+												'15pt' => '15pt',
+												'16pt' => '16pt',
 												'xx-small' => 'xx-small',
 												'x-small' => 'x-small',
 												'small' => 'small',
@@ -296,38 +302,5 @@ $themedir/BoardIndex.template.php
 
   // display shoutbox
   if (function_exists('sbox')) sbox();
-</add after>
-
-<edit file>
-$themedir/index.template.php
-</edit file>
-
-<search for>
-	echo $context['html_headers'], '
-</search for>
-
-<add after>
-		<script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
-			var current_header_sb = ', empty($options['collapse_header_sb']) ? 'false' : 'true', ';
-
-			function shrinkHeaderSB(mode)
-			{';
-
-	if ($context['user']['is_guest'])
-		echo '
-				document.cookie = "upshrinkSB=" + (mode ? 1 : 0);';
-	else
-		echo '
-				smf_setThemeOption("collapse_header_sb", mode ? 1 : 0, null, "', $context['session_id'], '");';
-
-	echo '
-				document.getElementById("upshrink_sb").src = smf_images_url + (mode ? "/expand.gif" : "/collapse.gif");
-
-				document.getElementById("upshrinkHeaderSB").style.display = mode ? "none" : "";
-
-				current_header_sb = mode;
-			}
-		// ]]></script>
-
 </add after>
 
