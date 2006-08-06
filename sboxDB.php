@@ -8,8 +8,68 @@ require("../SSI.php");
 if (!defined('SMF'))
   die('Hacking attempt...');
 
-// global variables
-global $db_connection, $context, $settings, $txt, $user_info, $modSettings, $db_prefix;
+// global variables (they are always global since we're here in the main routine)
+// global $db_connection, $context, $settings, $txt, $user_info, $modSettings, $db_prefix, $boarddir, $boardurl;
+
+$sbox_HistoryFile = $boarddir . '/sbox.history.html';
+
+// BEGIN: BORROWED FROM http://de2.php.net/manual/en/function.flock.php
+/*
+ * I hope this is usefull. 
+ * If mkdir() is atomic, 
+ * then we do not need to worry about race conditions while trying to make the lockDir,
+ * unless of course were writing to NFS, for which this function will be useless.
+ * so thats why i pulled out the usleep(rand()) peice from the last version
+ *
+ * Again, its important to tailor some of the parameters to ones indivdual usage
+ * I set the default $timeLimit to 3/10th's of a second (maximum time allowed to achieve a lock), 
+ * but if your writing some extrememly large files, and/or your server is very slow, you may need to increase it.
+ * Obviously, the $staleAge of the lock directory will be important to consider as well if the writing operations might take  a while.
+ * My defaults are extrememly general and you're encouraged to set your own
+ *
+ * $timeLimit is in microseconds
+ * $staleAge is in seconds
+ */
+
+function microtime_float() {
+   list($usec, $sec) = explode(' ', microtime());
+   return ((float)$usec + (float)$sec);
+}
+
+function locked_filewrite($filename, $data, $timeLimit = 300000, $staleAge = 5) {
+   ignore_user_abort(1);
+   $lockDir = $filename . '.lock';
+
+   if (is_dir($lockDir)) {
+     if ((time() - filemtime($lockDir)) > $staleAge) {
+       rmdir($lockDir);
+     }
+   }
+
+   $locked = @mkdir($lockDir);
+
+   if ($locked === false) {
+     $timeStart = microtime_float();
+     do {
+       if ((microtime_float() - $timeStart) > $timeLimit) break;
+       $locked = @mkdir($lockDir);
+     } while ($locked === false);
+   }
+
+   $success = false;
+
+   if ($locked === true) {
+     $fp = @fopen($filename, 'at');
+     if (@fwrite($fp, $data)) $success = true;
+     @fclose($fp);
+     rmdir($lockDir);
+   }
+
+   ignore_user_abort(0);
+   return $success;
+}
+// END: BORROWED FROM http://de2.php.net/manual/en/function.flock.php
+
 
 //display html header
 echo '<html xmlns="http://www.w3.org/1999/xhtml"' . ($context['right_to_left']?' dir="rtl"':'') . '>
@@ -23,6 +83,10 @@ echo '<html xmlns="http://www.w3.org/1999/xhtml"' . ($context['right_to_left']?'
   <script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
     function killYesNo() {
       return confirm("' . $txt['sbox_KillShout'] . '");
+    }
+
+    function clearYesNo() {
+      return confirm("' . $txt['quickmod_confirm'] . '");
     }
 
     // get SMF-time including time zone corrections (system+user)
@@ -81,6 +145,34 @@ switch ($_REQUEST['action']) {
       $rows = mysql_fetch_assoc($result) ;
       $sql = 'DELETE FROM ' . $db_prefix . "sbox_content WHERE id < '" . ($rows["id"]-$modSettings['sbox_MaxLines']) . "'";
       db_query($sql, __FILE__, __LINE__);
+      
+      // write into history if needed
+      if ($modSettings['sbox_DoHistory'] == '1') {
+        $ds = date('Y-m-d', $date) . '&nbsp;|&nbsp;' . date('H:i.s', $date);
+        
+        $content = stripslashes($content); // shouting content
+        $content = htmlentities($content);
+        if ($modSettings['sbox_AllowBBC'] == '1') {
+          $content = parse_bbc($content);
+        }
+        
+        $output = '[&nbsp;' . $ds . '&nbsp;]&nbsp;<b>&lt;<a href="' . $scripturl . '?action=profile;u=' . $context['user']['id'] . '" target="_blank" class="' . $divclass . '">' . ((!empty($context['user']['name']))?$context['user']['name']:$context['user']['username']) . '</a>&gt;</b>&nbsp;' . $content . '</div><br />' . "\n";
+        
+        if (!file_exists($sbox_HistoryFile)) {
+          // TODO: Prepare file ... HTML-header, stylesheet, etc.
+        }
+        
+        locked_filewrite($sbox_HistoryFile, $output);
+      }
+    }
+    break;
+   
+  case 'clearhist':
+    if ($context['user']['is_admin']) {
+      if (file_exists($sbox_HistoryFile)) {
+        // TODO: Check for existing lock, wait for lock to be released and delete then.
+        @unlink($sbox_HistoryFile);
+      }
     }
     break;
 
@@ -100,8 +192,18 @@ echo '
 echo "\n" . '<div class="OddLine"><b>[ ' . strftime($user_info['time_format'], forum_time(true)) . ' ]</b></div>';
 
 if ($context['user']['is_admin']) {
+  echo "\n" . '<div class="OddLine">';
+  if ($modSettings['sbox_DoHistory'] == '1') {
+    if (file_exists($sbox_HistoryFile)) {
+      echo '[<a href="' . str_replace($boarddir, $boardurl, $sbox_HistoryFile) . '" target="_blank">' . $txt['sbox_History'] . '</a>]';
+      echo ' [<a href="' . $_SERVER['PHP_SELF'] . '?action=clearhist" class="Kill" onClick="return clearYesNo();">' . $txt['sbox_HistoryClear'] . '</a>]';
+    } else {
+      echo '[' . $txt['sbox_HistoryNotFound'] . ']';
+    }
+  }
   // debug output for separator-bar
-//  echo "\n" . '<div class="OddLine">( CurTime: ' . forum_time(true) . ' / LastTime: ' . $_REQUEST['ts'] . ' )</div>';
+//  echo ' ( CurTime: ' . forum_time(true) . ' / LastTime: ' . $_REQUEST['ts'] . ' )';
+  echo '</div>';
 }
 
 /*
@@ -175,7 +277,7 @@ if(mysql_num_rows($result)) {
     echo "\n" . '<div class="' . $divclass . '">';
     
     if ($context['user']['is_admin']) {
-      echo '<a title="' . $txt['sbox_KillShout'] . '" class="Kill" onclick="return killYesNo();" href="sboxDB.php?action=kill&kill=' . $row['id'] . '">[X]</a>';
+      echo '[<a title="' . $txt['sbox_KillShout'] . '" class="Kill" onClick="return killYesNo();" href="' . $_SERVER['PHP_SELF'] . '?action=kill&kill=' . $row['id'] . '">X</a>]';
     }
     
     $wd = $txt['days_short'][date('w', $date)];

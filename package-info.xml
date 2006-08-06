@@ -21,16 +21,17 @@
 		Copyright 2006 - Neither this package or any of it's contents may be distributed without authorisation.
 			]]>
 		</readme>
-		<modification type="file" format="boardmod">sbox_v1.10.mod</modification>
+		<modification type="file" format="boardmod">sbox_11rc2.mod</modification>
 	</install>
 	<uninstall for="1.1 RC2">
 		<readme type="inline">Uninstall will remove all the changes made by the shoutbox. You must do this before upgrading!</readme>
-		<modification type="file" format="boardmod" reverse="true">sbox_v1.10.mod</modification>
+		<modification type="file" format="boardmod" reverse="true">sbox_11rc2.mod</modification>
 		<remove-file name="$sourcedir/sbox.php" />
 		<remove-file name="$sourcedir/sboxDB.php" />
 		<remove-file name="$themedir/sbox.template.php" />
 		<remove-file name="$themedir/images/sbox_refresh.gif" />
 		<remove-file name="$boarddir/chat-inbound_GSM.wav" />
+		<remove-file name="$boarddir/sbox.history.html" />
 		<code type="file">sbox_remove.php</code>
 	</uninstall>
 	<install>
