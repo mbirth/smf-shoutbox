@@ -111,6 +111,7 @@ $txt['sbox_Refresh'] = 'Refresh';
 $txt['sbox_History'] = 'History';
 $txt['sbox_HistoryClear'] = 'Clear history';
 $txt['sbox_HistoryNotFound'] = 'No history found.';
+$txt['sbox_EnableSounds'] = 'Enable sounds';
 </add before>
 
 
@@ -134,6 +135,7 @@ $helptxt['sbox_SmiliesVisible'] = 'Here you can decide whether smileys are visib
 $helptxt['sbox_RefreshTime'] = 'Here you can adjust the refresh time';
 $helptxt['sbox_DoHistory'] = 'Defines whether all shouts should be written to a file so that an Administrator can check what was going on.';
 $helptxt['sbox_AllowBBC'] = 'Defines whether users are allowed to use BBCode in shouts. If disabled, only plain text is displayed - no smileys, no formatting.';
+$helptxt['sbox_EnableSounds'] = 'Enables the notification sound, when your nickname was mentioned since the last refresh.';
 </add before>
 
 
@@ -249,7 +251,8 @@ function ModifySboxSettings()
 												),
 			),
 		array('text', 'sbox_TextColor2'),
-		array('text', 'sbox_BackgroundColor')
+		array('text', 'sbox_BackgroundColor'),
+		array('check', 'sbox_EnableSounds'),
 	);
 
 	// Saving?

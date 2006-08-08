@@ -125,7 +125,7 @@ echo '<html xmlns="http://www.w3.org/1999/xhtml"' . ($context['right_to_left']?'
   </style>';
 
 
-switch ($_REQUEST['action']) {
+if (!empty($_REQUEST['action'])) switch ($_REQUEST['action']) {
  
   case 'write':
     if  (((!$context['user']['is_guest']) || ($modSettings['sbox_GuestAllowed'] == '1')) && !empty($_REQUEST['sboxText'])) {
@@ -182,6 +182,7 @@ switch ($_REQUEST['action']) {
       db_query($sql, __FILE__, __LINE__);
     }
     break;
+    
 }
 
 // close header and open body
@@ -296,7 +297,7 @@ if(mysql_num_rows($result)) {
     
     echo '[&nbsp;' . $ds . '&nbsp;]&nbsp;<b>&lt;<a href="' . $scripturl . '?action=profile;u=' . $name . '" target="_top" class="' . $divclass . '">' . ((!empty($row['realName']))?$row['realName']:$row['memberName']) . '</a>&gt;</b>&nbsp;' . $content . '</div>';
   }
-  if ($alert === true && $div === true) {
+  if (($modSettings['sbox_EnableSounds']) && ($alert === true) && ($div === true)) {
     echo '<embed src="' . $boardurl . '/chat-inbound_GSM.wav" hidden="true" autostart="true" loop="false"></embed>' . "\n";
   }
 }

@@ -35,6 +35,7 @@ $mod_settings = array(
 	'sbox_TextSize2' => 'xx-small',
 	'sbox_TextColor2' => '#476c8e',
 	'sbox_BackgroundColor' => '#e5e5e8',
+	'sbox_EnableSounds' => '0',
 );
 
 /******************************************************************************/
