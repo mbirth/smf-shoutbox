@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE package-info SYSTEM "http://www.simplemachines.org/xml/package-info">
+<package-info xmlns="http://www.simplemachines.org/xml/package-info" xmlns:smf="http://www.simplemachines.org/">
+	<name>SMF Shoutbox LanguagePack German</name>
+	<id>Deep:SMF_Shoutbox</id>
+	<type>modification</type>
+	<version>1.10</version>
+	<install for="1.1 RC2">
+		<readme type="inline">
+			<![CDATA[
+			This adds the german language pack for SMF shoutbox to your SMF forum.
+
+		Originally written By Deep (diem4@gmx.net), inspired by Matthew Wolf (a.k.a Grudge)
+		Heavily improved by Markus Birth (mbirth@webwriters.de)
+		Copyright 2006 - Neither this package or any of it's contents may be distributed without authorization.
+			]]>
+		</readme>
+		<modification type="file" format="boardmod">sbox_11rc2_german.mod</modification>
+	</install>
+	<uninstall for="1.1 RC2">
+		<readme type="inline">Uninstall will remove all the changes made by the SMF shoutbox german language pack. You must do this before upgrading!</readme>
+		<modification type="file" format="boardmod" reverse="true">sbox_11rc2_german.mod</modification>
+	</uninstall>
+	<install>
+		<readme type="inline">Sorry, but the SMF Shoutbox Mod doesn't support your SMF version!</readme>
+	</install>
+</package-info>

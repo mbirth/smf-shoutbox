@@ -96,18 +96,21 @@ $txt['sbox_GuestVisible'] = 'Make Shoutbox visible to Guests';
 $txt['sbox_MaxLines'] = 'Maximum number of displayed shouts';
 $txt['sbox_Height'] = 'Shoutbox height (px)';
 $txt['sbox_SmiliesVisible'] = 'Smiley row is visible';
+$txt['sbox_UserLinksVisible'] = 'Show profile links';
 $txt['sbox_KillShout'] = 'Dou you want to kill this shout?';
 $txt['sbox_TextSize1'] = '1. Font size';
 $txt['sbox_TextColor1'] = '1. Font color';
 $txt['sbox_TextSize2'] = '2. Font size';
 $txt['sbox_TextColor2'] = '2. Font color';
 $txt['sbox_RefreshTime'] = 'Refresh time';
+$txt['sbox_BlockRefresh'] = 'Block Refresh after inactivity';
 $txt['sbox_BackgroundColor'] = 'Background color';
 $txt['sbox_FontFamily1'] = '1. Font family';
 $txt['sbox_FontFamily2'] = '2. Font family';
 $txt['sbox_DoHistory'] = 'Create history of shouts';
 $txt['sbox_AllowBBC'] = 'Allow BBCode';
 $txt['sbox_Refresh'] = 'Refresh';
+$txt['sbox_RefreshBlocked'] = 'Automatic refresh disabled due to inactivity';
 $txt['sbox_History'] = 'History';
 $txt['sbox_HistoryClear'] = 'Clear history';
 $txt['sbox_HistoryNotFound'] = 'No history found.';
@@ -132,7 +135,9 @@ $helptxt['sbox_GuestVisible'] = 'Defines whether the Shoutbox is visible to gues
 $helptxt['sbox_MaxLines'] = 'Here you can enter the maximal count of lines displayed in the shoutbox.';
 $helptxt['sbox_Height'] = 'Here you can enter the height (pixels) of the shoutbox.';
 $helptxt['sbox_SmiliesVisible'] = 'Here you can decide whether smileys are visible or not. They work independently of this setting, though.';
+$helptxt['sbox_UserLinksVisible'] = 'Defines whether the names of shouters are linked to their profile page or not.';
 $helptxt['sbox_RefreshTime'] = 'Here you can adjust the refresh time';
+$helptxt['sbox_BlockRefresh'] = 'Defines whether the Shoutbox should stop refreshing after there have been no new shouts for a while. Users can still manually refresh the Shoutbox. The time treshold used is the <i>User online time treshold</i> found in the <i>Basic Features</i>-settings. (currently ' . $modSettings['lastActive'] . ' minutes)';
 $helptxt['sbox_DoHistory'] = 'Defines whether all shouts should be written to a file so that an Administrator can check what was going on.';
 $helptxt['sbox_AllowBBC'] = 'Defines whether users are allowed to use BBCode in shouts. If disabled, only plain text is displayed - no smileys, no formatting.';
 $helptxt['sbox_EnableSounds'] = 'Enables the notification sound, when your nickname was mentioned since the last refresh.';
@@ -180,11 +185,13 @@ function ModifySboxSettings()
 		array('check', 'sbox_GuestVisible'),
 		array('check', 'sbox_GuestAllowed'),
 		array('check', 'sbox_SmiliesVisible'),
+		array('check', 'sbox_UserLinksVisible'),
 		array('check', 'sbox_AllowBBC'),
 		array('check', 'sbox_DoHistory'),
 		array('int', 'sbox_MaxLines'),
 		array('int', 'sbox_Height'),
 		array('int', 'sbox_RefreshTime'),
+		array('check', 'sbox_BlockRefresh'),
 		array('select', 'sbox_FontFamily1', array(
 												'Garamond, serif' => 'Garamond, serif',
 												'Times, serif' => 'Times, serif',

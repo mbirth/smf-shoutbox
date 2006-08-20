@@ -74,20 +74,24 @@ function locked_filewrite($filename, $data, $timeLimit = 300000, $staleAge = 5) 
 //display html header
 echo '<html xmlns="http://www.w3.org/1999/xhtml"' . ($context['right_to_left']?' dir="rtl"':'') . '>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=', $context['character_set'], '" />
-  <meta name="description" content="Shoutbox" />
-  <meta name="keywords" content="Shoutbox" />
-  <title>Shoutbox</title>
-  <meta http-equiv="refresh" content="' . $modSettings['sbox_RefreshTime'] . ';URL=sboxDB.php?ts=' . time() . '">
+  <meta http-equiv="Content-Type" content="text/html; charset=', $context['character_set'], '" />';
+  
+$result = db_query("SELECT time FROM {$db_prefix}sbox_content ORDER BY time DESC LIMIT 1", __FILE__, __LINE__);
+$row = mysql_fetch_assoc($result);
+$refreshBlocked = false;
+$delta = time() - $row['time'];
+if (($delta > $modSettings['lastActive']*60) && ($modSettings['sbox_BlockRefresh'] == '1')) {
+  $refreshBlocked = true;
+} else {
+  echo '
+  <meta http-equiv="refresh" content="' . $modSettings['sbox_RefreshTime'] . ';URL=sboxDB.php?ts=' . time() . '">';
+}
+
+echo '
   <link rel="stylesheet" type="text/css" href="' . $settings['theme_url'] . '/style.css?rc2" />
   <script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
-    function killYesNo() {
-      return confirm("' . $txt['sbox_KillShout'] . '");
-    }
-
-    function clearYesNo() {
-      return confirm("' . $txt['quickmod_confirm'] . '");
-    }
+    function kill() { return confirm("' . $txt['sbox_KillShout'] . '"); }
+    function clear() { return confirm("' . $txt['quickmod_confirm'] . '"); }
 
     // get SMF-time including time zone corrections (system+user)
     if (parent && parent.document.sbox.ts) {
@@ -95,16 +99,15 @@ echo '<html xmlns="http://www.w3.org/1999/xhtml"' . ($context['right_to_left']?'
     }
     // if (parent.document.sbox.ts.value != ' . forum_time(true) . ') alert(\'Time mismatch! (\'+parent.document.sbox.ts.value+\' / ' . forum_time(true) . ')\');
     // ]]></script>
-
   <style type="text/css">
-    .OddLine, A.OddLine {
+    .Odd, A.Odd {
       font-family: ' . $modSettings['sbox_FontFamily1'] . ';
       font-style: normal;
       font-size: ' . $modSettings['sbox_TextSize1'] . ';
       font-weight: normal;
       color: ' . $modSettings['sbox_TextColor1'] . ';
     } 
-    .EvenLine, A.EvenLine {
+    .Even, A.Even {
       font-family: ' . $modSettings['sbox_FontFamily2'] . ';
       font-style: normal;
       font-size: ' . $modSettings['sbox_TextSize2'] . ';
@@ -116,8 +119,9 @@ echo '<html xmlns="http://www.w3.org/1999/xhtml"' . ($context['right_to_left']?'
       padding: 0px 0px 0px 0px;
       background-color: ' . $modSettings['sbox_BackgroundColor'] . ';
     }
-    A {
+    DIV.Even A[target="_blank"], DIV.Odd A[target="_blank"] {
       text-decoration: none;
+      color: blue;
     }
     A.Kill {
       color: #ff0000;
@@ -142,7 +146,7 @@ if (!empty($_REQUEST['action'])) switch ($_REQUEST['action']) {
     
       // delete old shout messages (get id of last shouting and delete all shoutings as defined in settings
       $result = db_query("SELECT id FROM " . $db_prefix . "sbox_content WHERE ID_MEMBER='" . $context['user']['id'] . "' AND content='" . $content . "' AND time='$date'", __FILE__, __LINE__);
-      $rows = mysql_fetch_assoc($result) ;
+      $rows = mysql_fetch_assoc($result);
       $sql = 'DELETE FROM ' . $db_prefix . "sbox_content WHERE id < '" . ($rows["id"]-$modSettings['sbox_MaxLines']) . "'";
       db_query($sql, __FILE__, __LINE__);
       
@@ -190,14 +194,18 @@ echo '
 </head>
 <body>';
 
-echo "\n" . '<div class="OddLine"><b>[ ' . strftime($user_info['time_format'], forum_time(true)) . ' ]</b></div>';
+echo "\n" . '<div class="Odd"><b>[ ' . strftime($user_info['time_format'], forum_time(true)) . ' ]';
+if ($refreshBlocked) {
+  echo ' [ <span class="Kill">' . $txt['sbox_RefreshBlocked'] . '</span> ]';
+}
+echo '</b></div>';
 
 if ($context['user']['is_admin']) {
-  echo "\n" . '<div class="OddLine">';
+  echo "\n" . '<div class="Odd">';
   if ($modSettings['sbox_DoHistory'] == '1') {
     if (file_exists($sbox_HistoryFile)) {
       echo '[<a href="' . str_replace($boarddir, $boardurl, $sbox_HistoryFile) . '" target="_blank">' . $txt['sbox_History'] . '</a>]';
-      echo ' [<a href="' . $_SERVER['PHP_SELF'] . '?action=clearhist" class="Kill" onClick="return clearYesNo();">' . $txt['sbox_HistoryClear'] . '</a>]';
+      echo ' [<a href="' . $_SERVER['PHP_SELF'] . '?action=clearhist" class="Kill" onClick="return clear();">' . $txt['sbox_HistoryClear'] . '</a>]';
     } else {
       echo '[' . $txt['sbox_HistoryNotFound'] . ']';
     }
@@ -252,9 +260,9 @@ if(mysql_num_rows($result)) {
 
     // display shouting message and use a different color each second row
     if ($count % 2 == 0) {
-      $divclass = 'OddLine';
+      $divclass = 'Odd';
     } else {
-      $divclass = 'EvenLine';
+      $divclass = 'Even';
     }
 
 /*    $r = $g = $b = 0;
@@ -278,7 +286,7 @@ if(mysql_num_rows($result)) {
     echo "\n" . '<div class="' . $divclass . '">';
     
     if ($context['user']['is_admin']) {
-      echo '[<a title="' . $txt['sbox_KillShout'] . '" class="Kill" onClick="return killYesNo();" href="' . $_SERVER['PHP_SELF'] . '?action=kill&kill=' . $row['id'] . '">X</a>]';
+      echo '[<a title="' . $txt['sbox_KillShout'] . '" class="Kill" onClick="return kill();" href="' . $_SERVER['PHP_SELF'] . '?action=kill&kill=' . $row['id'] . '">X</a>]';
     }
     
     $wd = $txt['days_short'][date('w', $date)];
@@ -295,7 +303,11 @@ if(mysql_num_rows($result)) {
       $content = str_replace($user_info['username'], '<b><u>' . $user_info['username'] . '</u></b>', $content);
     }
     
-    echo '[&nbsp;' . $ds . '&nbsp;]&nbsp;<b>&lt;<a href="' . $scripturl . '?action=profile;u=' . $name . '" target="_top" class="' . $divclass . '">' . ((!empty($row['realName']))?$row['realName']:$row['memberName']) . '</a>&gt;</b>&nbsp;' . $content . '</div>';
+    echo '[&nbsp;' . $ds . '&nbsp;]&nbsp;<b>&lt;';
+    if ($modSettings['sbox_UserLinksVisible'] == '1') echo '<a href="' . $scripturl . '?action=profile;u=' . $name . '" target="_top" class="' . $divclass . '">';
+    echo ((!empty($row['realName']))?$row['realName']:$row['memberName']);
+    if ($modSettings['sbox_UserLinksVisible'] == '1') echo '</a>';
+    echo '&gt;</b>&nbsp;' . $content . '</div>';
   }
   if (($modSettings['sbox_EnableSounds']) && ($alert === true) && ($div === true)) {
     echo '<embed src="' . $boardurl . '/chat-inbound_GSM.wav" hidden="true" autostart="true" loop="false"></embed>' . "\n";
