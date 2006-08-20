@@ -3,7 +3,7 @@ SMF Shoutbox , German Language Pack
 </id>
 
 <version>
-1.10
+1.11
 </version>
 
 <mod info>
@@ -56,7 +56,7 @@ $txt['sbox_TextColor1'] = '1. Schriftfarbe';
 $txt['sbox_TextSize2'] = '2. Schriftgr&ouml;&szlig;e';
 $txt['sbox_TextColor2'] = '2. Schriftfarbe';
 $txt['sbox_RefreshTime'] = 'Aktualisierungsintervall';
-$txt['sbox_BlockRefresh'] = 'Aktualisierung nach Inaktivit&auml;t stoppen';
+$txt['sbox_BlockRefresh'] = 'Aktualisierung nach Inaktivit&auml;t stoppen (' . $modSettings['lastActive'] . ' min)';
 $txt['sbox_BackgroundColor'] = 'Hintergrundfarbe';
 $txt['sbox_FontFamily1'] = '1. Schriftart';
 $txt['sbox_FontFamily2'] = '2. Schriftart';
@@ -90,7 +90,7 @@ $helptxt['sbox_Height'] = 'Bestimmen Sie hier die H&ouml;he der Shoutbox (Anzahl
 $helptxt['sbox_SmiliesVisible'] = 'Hier k&ouml;nnen Sie einstellen, ob die Smilies sichtbar sind oder nicht. Diese Einstellung gilt f&uuml;r ALLE Benutzer.';
 $helptxt['sbox_UserLinksVisible'] = 'Legt fest, ob die Namen der Shouter mit deren Profilseite verlinkt werden sollen oder nicht.';
 $helptxt['sbox_RefreshTime'] = 'Hier k&ouml;nnen Sie das Aktualisierungsintervall einstellen, also die Anzahl der Sekunden, die vergehen m&uuml;ssen, bevor sich die Shoutbox automatisch aktualisiert.';
-$helptxt['sbox_BlockRefresh'] = 'Legt fest, ob die automatische Aktualisierung nach eine Weile Inaktivit&auml;t automatisch gestoppt werden soll. Benutzer k&ouml;nnen die Shoutbox weiterhin manuell aktualisieren. Die Zeitspanne wird unter <i>Zeit der Benutzeranzeige</i> in den <i>Standard-Funktionen</i> festgelegt.';
+$helptxt['sbox_BlockRefresh'] = 'Legt fest, ob die automatische Aktualisierung nach eine Weile Inaktivit&auml;t automatisch gestoppt werden soll. Benutzer k&ouml;nnen die Shoutbox weiterhin manuell aktualisieren. Die Zeitspanne wird unter <i>Zeit der Benutzeranzeige</i> in den <i>Standard-Funktionen</i> festgelegt. (Momentan ' . $modSettings['lastActive'] . ' Minuten)';
 $helptxt['sbox_DoHistory'] = 'Legt fest, ob alle Shouts auch in eine Verlaufsdatei geschrieben werden sollen, so dass ein Administrator angebliche Vorf&auml;lle nachpr&uuml;fen kann.';
 $helptxt['sbox_AllowBBC'] = 'Legt fest, ob Benutzer BBCode in Shouts benutzen k&ouml;nnen. Wenn dies deaktiviert ist, wird nur Klartext angezeigt - ohne Smileys oder Formatierungen.';
 $helptxt['sbox_EnableSounds'] = 'Aktiviert einen Ton, der gespielt wird, wenn der eigene Nickname in einem neuen Shout auftaucht.';

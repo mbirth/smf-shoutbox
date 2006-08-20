@@ -80,7 +80,8 @@ $result = db_query("SELECT time FROM {$db_prefix}sbox_content ORDER BY time DESC
 $row = mysql_fetch_assoc($result);
 $refreshBlocked = false;
 $delta = time() - $row['time'];
-if (($delta > $modSettings['lastActive']*60) && ($modSettings['sbox_BlockRefresh'] == '1')) {
+if ((!empty($_REQUEST['action'])) && ($_REQUEST['action'] == 'write')) $dontblock = true; else $dontblock = false;
+if (($delta > $modSettings['lastActive']*60) && ($modSettings['sbox_BlockRefresh'] == '1') && (!$dontblock)) {
   $refreshBlocked = true;
 } else {
   echo '
@@ -91,7 +92,7 @@ echo '
   <link rel="stylesheet" type="text/css" href="' . $settings['theme_url'] . '/style.css?rc2" />
   <script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
     function kill() { return confirm("' . $txt['sbox_KillShout'] . '"); }
-    function clear() { return confirm("' . $txt['quickmod_confirm'] . '"); }
+    function clearHist() { return confirm("' . $txt['quickmod_confirm'] . '"); }
 
     // get SMF-time including time zone corrections (system+user)
     if (parent && parent.document.sbox.ts) {
@@ -205,7 +206,7 @@ if ($context['user']['is_admin']) {
   if ($modSettings['sbox_DoHistory'] == '1') {
     if (file_exists($sbox_HistoryFile)) {
       echo '[<a href="' . str_replace($boarddir, $boardurl, $sbox_HistoryFile) . '" target="_blank">' . $txt['sbox_History'] . '</a>]';
-      echo ' [<a href="' . $_SERVER['PHP_SELF'] . '?action=clearhist" class="Kill" onClick="return clear();">' . $txt['sbox_HistoryClear'] . '</a>]';
+      echo ' [<a href="' . $_SERVER['PHP_SELF'] . '?action=clearhist" class="Kill" onClick="return clearHist();">' . $txt['sbox_HistoryClear'] . '</a>]';
     } else {
       echo '[' . $txt['sbox_HistoryNotFound'] . ']';
     }

@@ -1,40 +1,42 @@
 <?xml version="1.0"?>
 <!DOCTYPE package-info SYSTEM "http://www.simplemachines.org/xml/package-info">
 <package-info xmlns="http://www.simplemachines.org/xml/package-info" xmlns:smf="http://www.simplemachines.org/">
-	<name>SMF Shoutbox</name>
-	<id>Deep:SMF_Shoutbox</id>
-	<type>modification</type>
-	<version>1.10</version>
-	<install for="1.1 RC2">
-		<require-file name="sbox.php" destination="$sourcedir" />
-		<require-file name="sboxDB.php" destination="$sourcedir" />
-		<require-file name="sbox.template.php" destination="$themedir" />
-		<require-file name="sbox_refresh.gif" destination="$themedir/images" />
-		<require-file name="chat-inbound_GSM.wav" destination="$boarddir" />
-		<code type="file">sbox_setup.php</code>
-		<readme type="inline">
-			<![CDATA[
-			This allows you to put a shoutbox on your SMF forum above the board index of the default theme.
+  <name>SMF Shoutbox</name>
+  <id>Deep:SMF_Shoutbox</id>
+  <type>modification</type>
+  <version>1.11</version>
+  <install for="1.1 RC2">
+    <require-file name="sbox.php" destination="$sourcedir" />
+    <require-file name="sboxDB.php" destination="$sourcedir" />
+    <require-file name="sbox.template.php" destination="$themedir" />
+    <require-file name="sbox_refresh.gif" destination="$themedir/images" />
+    <require-file name="chat-inbound_GSM.wav" destination="$boarddir" />
+    <require-file name="sbox_v1.11_german.zip" destination="$boarddir/Packages" />
+    <code type="file">sbox_setup.php</code>
+    <readme type="inline">
+      <![CDATA[
+      This allows you to put a shoutbox on your SMF forum above the board index of the default theme.
 
-		Originally written By Deep (diem4@gmx.net), inspired by Matthew Wolf (a.k.a Grudge)
-		Heavily improved by Markus Birth (mbirth@webwriters.de)
-		Copyright 2006 - Neither this package or any of it's contents may be distributed without authorisation.
-			]]>
-		</readme>
-		<modification type="file" format="boardmod">sbox_11rc2.mod</modification>
-	</install>
-	<uninstall for="1.1 RC2">
-		<readme type="inline">Uninstall will remove all the changes made by the shoutbox. You must do this before upgrading!</readme>
-		<modification type="file" format="boardmod" reverse="true">sbox_11rc2.mod</modification>
-		<remove-file name="$sourcedir/sbox.php" />
-		<remove-file name="$sourcedir/sboxDB.php" />
-		<remove-file name="$themedir/sbox.template.php" />
-		<remove-file name="$themedir/images/sbox_refresh.gif" />
-		<remove-file name="$boarddir/chat-inbound_GSM.wav" />
-		<remove-file name="$boarddir/sbox.history.html" />
-		<code type="file">sbox_remove.php</code>
-	</uninstall>
-	<install>
-		<readme type="inline">Sorry, but the SMF Shoutbox Mod doesn't support your SMF version!</readme>
-	</install>
+    Originally written By Deep (diem4@gmx.net), inspired by Matthew Wolf (a.k.a Grudge)
+    Heavily improved by Markus Birth (mbirth@webwriters.de)
+    Copyright 2006 - Neither this package or any of it's contents may be distributed without authorisation.
+      ]]>
+    </readme>
+    <modification type="file" format="boardmod">sbox_11rc2.mod</modification>
+  </install>
+  <uninstall for="1.1 RC2">
+    <readme type="inline">Uninstall will remove all the changes made by the shoutbox. You must do this before upgrading!</readme>
+    <modification type="file" format="boardmod" reverse="true">sbox_11rc2.mod</modification>
+    <remove-file name="$sourcedir/sbox.php" />
+    <remove-file name="$sourcedir/sboxDB.php" />
+    <remove-file name="$themedir/sbox.template.php" />
+    <remove-file name="$themedir/images/sbox_refresh.gif" />
+    <remove-file name="$boarddir/chat-inbound_GSM.wav" />
+    <remove-file name="$boarddir/sbox.history.html" />
+    <remove-file name="$boarddir/Packages/sbox_v1.11_german.zip" />
+    <code type="file">sbox_remove.php</code>
+  </uninstall>
+  <install>
+    <readme type="inline">Sorry, but the SMF Shoutbox Mod doesn't support your SMF version!</readme>
+  </install>
 </package-info>

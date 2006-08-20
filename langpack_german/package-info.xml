@@ -2,9 +2,9 @@
 <!DOCTYPE package-info SYSTEM "http://www.simplemachines.org/xml/package-info">
 <package-info xmlns="http://www.simplemachines.org/xml/package-info" xmlns:smf="http://www.simplemachines.org/">
 	<name>SMF Shoutbox LanguagePack German</name>
-	<id>Deep:SMF_Shoutbox</id>
+	<id>Deep:SMF_Shoutbox:LangPack_German</id>
 	<type>modification</type>
-	<version>1.10</version>
+	<version>1.11</version>
 	<install for="1.1 RC2">
 		<readme type="inline">
 			<![CDATA[

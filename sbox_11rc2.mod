@@ -3,7 +3,7 @@ SMF Shoutbox
 </id>
 
 <version>
-1.10
+1.11
 </version>
 
 <mod info>
@@ -31,6 +31,12 @@ Please direct any questions regarding this version to Deep, either by email (die
 in the appropriate place at www.simplemachines.org (the preferred option!)
 
 History:
+Version 1.11
++ added German language-pack
++ added switch to disable linking to profile pages
++ added switch to disable Refresh after there have been no posts in lastActive time
+* shortened some CSS classnames
+
 Version 1.10
 1. sequential messages from one user have the same color
 2. character limit for one shout has been raised to 320 chars (like one long SMS ;-)
@@ -103,7 +109,7 @@ $txt['sbox_TextColor1'] = '1. Font color';
 $txt['sbox_TextSize2'] = '2. Font size';
 $txt['sbox_TextColor2'] = '2. Font color';
 $txt['sbox_RefreshTime'] = 'Refresh time';
-$txt['sbox_BlockRefresh'] = 'Block Refresh after inactivity';
+$txt['sbox_BlockRefresh'] = 'Block Refresh after inactivity (' . $modSettings['lastActive'] . ' mins)';
 $txt['sbox_BackgroundColor'] = 'Background color';
 $txt['sbox_FontFamily1'] = '1. Font family';
 $txt['sbox_FontFamily2'] = '2. Font family';
