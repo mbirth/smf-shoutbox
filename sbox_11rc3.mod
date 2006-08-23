@@ -3,7 +3,7 @@ SMF Shoutbox
 </id>
 
 <version>
-1.11
+1.12
 </version>
 
 <mod info>
@@ -31,6 +31,9 @@ Please direct any questions regarding this version to Deep, either by email (die
 in the appropriate place at www.simplemachines.org (the preferred option!)
 
 History:
+Version 1.12
+
+
 Version 1.11
 + added German language-pack
 + added switch to disable linking to profile pages
@@ -85,72 +88,6 @@ No homepage available at the moment
 </homepage>
 
 <edit file>
-$languagedir/Modifications.english.php
-</edit file>
-
-<search for>
-?>
-</search for>
-
-<add before>
-
-//SMF Shoutbox
-$txt['sbox_ModTitle'] = 'SMF Shoutbox';
-$txt['sbox_Visible'] = 'Shoutbox is visible';
-$txt['sbox_GuestAllowed'] = 'Guests are allowed to shout';
-$txt['sbox_GuestVisible'] = 'Make Shoutbox visible to Guests';
-$txt['sbox_MaxLines'] = 'Maximum number of displayed shouts';
-$txt['sbox_Height'] = 'Shoutbox height (px)';
-$txt['sbox_SmiliesVisible'] = 'Smiley row is visible';
-$txt['sbox_UserLinksVisible'] = 'Show profile links';
-$txt['sbox_KillShout'] = 'Dou you want to kill this shout?';
-$txt['sbox_TextSize1'] = '1. Font size';
-$txt['sbox_TextColor1'] = '1. Font color';
-$txt['sbox_TextSize2'] = '2. Font size';
-$txt['sbox_TextColor2'] = '2. Font color';
-$txt['sbox_RefreshTime'] = 'Refresh time';
-$txt['sbox_BlockRefresh'] = 'Block Refresh after inactivity (' . $modSettings['lastActive'] . ' mins)';
-$txt['sbox_BackgroundColor'] = 'Background color';
-$txt['sbox_FontFamily1'] = '1. Font family';
-$txt['sbox_FontFamily2'] = '2. Font family';
-$txt['sbox_DoHistory'] = 'Create history of shouts';
-$txt['sbox_AllowBBC'] = 'Allow BBCode';
-$txt['sbox_Refresh'] = 'Refresh';
-$txt['sbox_RefreshBlocked'] = 'Automatic refresh disabled due to inactivity';
-$txt['sbox_History'] = 'History';
-$txt['sbox_HistoryClear'] = 'Clear history';
-$txt['sbox_HistoryNotFound'] = 'No history found.';
-$txt['sbox_EnableSounds'] = 'Enable sounds';
-</add before>
-
-
-<edit file>
-$languagedir/Help.english.php
-</edit file>
-
-<search for>
-?>
-</search for>
-
-<add before>
-
-//SMF Shoutbox
-$helptxt['sbox_Visible'] = 'Here you can decide wether the shoutbox is visible at all or not.';
-$helptxt['sbox_GuestAllowed'] = 'Here you can decide whether guests are allowed to post new shouts.';
-$helptxt['sbox_GuestVisible'] = 'Defines whether the Shoutbox is visible to guests at all.';
-$helptxt['sbox_MaxLines'] = 'Here you can enter the maximal count of lines displayed in the shoutbox.';
-$helptxt['sbox_Height'] = 'Here you can enter the height (pixels) of the shoutbox.';
-$helptxt['sbox_SmiliesVisible'] = 'Here you can decide whether smileys are visible or not. They work independently of this setting, though.';
-$helptxt['sbox_UserLinksVisible'] = 'Defines whether the names of shouters are linked to their profile page or not.';
-$helptxt['sbox_RefreshTime'] = 'Here you can adjust the refresh time';
-$helptxt['sbox_BlockRefresh'] = 'Defines whether the Shoutbox should stop refreshing after there have been no new shouts for a while. Users can still manually refresh the Shoutbox. The time treshold used is the <i>User online time treshold</i> found in the <i>Basic Features</i>-settings. (currently ' . $modSettings['lastActive'] . ' minutes)';
-$helptxt['sbox_DoHistory'] = 'Defines whether all shouts should be written to a file so that an Administrator can check what was going on.';
-$helptxt['sbox_AllowBBC'] = 'Defines whether users are allowed to use BBCode in shouts. If disabled, only plain text is displayed - no smileys, no formatting.';
-$helptxt['sbox_EnableSounds'] = 'Enables the notification sound, when your nickname was mentioned since the last refresh.';
-</add before>
-
-
-<edit file>
 $sourcedir/ModSettings.php
 </edit file>
 
@@ -181,6 +118,8 @@ function ModifyKarmaSettings()
 </search for>
 
 <add before>
+loadLanguage('sbox');
+
 function ModifySboxSettings()
 {
 	global $txt, $scripturl, $context, $settings, $sc;
@@ -323,3 +262,27 @@ $themedir/BoardIndex.template.php
   if (function_exists('sbox')) sbox();
 </add after>
 
+<edit file>
+$languagedir/Help.english.php
+</edit file>
+
+<search for>
+?>
+</search for>
+
+<add before>
+
+//SMF Shoutbox
+$helptxt['sbox_Visible'] = 'Here you can decide wether the shoutbox is visible at all or not.';
+$helptxt['sbox_GuestAllowed'] = 'Here you can decide whether guests are allowed to post new shouts.';
+$helptxt['sbox_GuestVisible'] = 'Defines whether the Shoutbox is visible to guests at all.';
+$helptxt['sbox_MaxLines'] = 'Here you can enter the maximal count of lines displayed in the shoutbox.';
+$helptxt['sbox_Height'] = 'Here you can enter the height (pixels) of the shoutbox.';
+$helptxt['sbox_SmiliesVisible'] = 'Here you can decide whether smileys are visible or not. They work independently of this setting, though.';
+$helptxt['sbox_UserLinksVisible'] = 'Defines whether the names of shouters are linked to their profile page or not.';
+$helptxt['sbox_RefreshTime'] = 'Here you can adjust the refresh time';
+$helptxt['sbox_BlockRefresh'] = 'Defines whether the Shoutbox should stop refreshing after there have been no new shouts for a while. Users can still manually refresh the Shoutbox. The time treshold used is the <i>User online time treshold</i> found in the <i>Basic Features</i>-settings. (currently ' . $modSettings['lastActive'] . ' minutes)';
+$helptxt['sbox_DoHistory'] = 'Defines whether all shouts should be written to a file so that an Administrator can check what was going on.';
+$helptxt['sbox_AllowBBC'] = 'Defines whether users are allowed to use BBCode in shouts. If disabled, only plain text is displayed - no smileys, no formatting.';
+$helptxt['sbox_EnableSounds'] = 'Enables the notification sound, when your nickname was mentioned since the last refresh.';
+</add before>

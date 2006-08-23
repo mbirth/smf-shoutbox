@@ -8,9 +8,7 @@ require("../SSI.php");
 if (!defined('SMF'))
   die('Hacking attempt...');
 
-// global variables (they are always global since we're here in the main routine)
-// global $db_connection, $context, $settings, $txt, $user_info, $modSettings, $db_prefix, $boarddir, $boardurl;
-
+loadLanguage('sbox');
 $sbox_HistoryFile = $boarddir . '/sbox.history.html';
 
 // BEGIN: BORROWED FROM http://de2.php.net/manual/en/function.flock.php
@@ -175,8 +173,12 @@ if (!empty($_REQUEST['action'])) switch ($_REQUEST['action']) {
   case 'clearhist':
     if ($context['user']['is_admin']) {
       if (file_exists($sbox_HistoryFile)) {
-        // TODO: Check for existing lock, wait for lock to be released and delete then.
-        @unlink($sbox_HistoryFile);
+        $lockDir = $sbox_HistoryFile . '.lock';
+        $start = time();
+        while ((is_dir($lockDir)) && ((time() - $start) < 5)) {
+          usleep(100000);  // sleep 1/10th of a second (for a PC these are ages!)
+        }
+        if (!is_dir($lockDir)) @unlink($sbox_HistoryFile);
       }
     }
     break;
@@ -202,18 +204,16 @@ if ($refreshBlocked) {
 echo '</b></div>';
 
 if ($context['user']['is_admin']) {
-  echo "\n" . '<div class="Odd">';
   if ($modSettings['sbox_DoHistory'] == '1') {
+    echo "\n" . '<div class="Odd">';
     if (file_exists($sbox_HistoryFile)) {
       echo '[<a href="' . str_replace($boarddir, $boardurl, $sbox_HistoryFile) . '" target="_blank">' . $txt['sbox_History'] . '</a>]';
       echo ' [<a href="' . $_SERVER['PHP_SELF'] . '?action=clearhist" class="Kill" onClick="return clearHist();">' . $txt['sbox_HistoryClear'] . '</a>]';
     } else {
       echo '[' . $txt['sbox_HistoryNotFound'] . ']';
     }
+    echo '</div>';
   }
-  // debug output for separator-bar
-//  echo ' ( CurTime: ' . forum_time(true) . ' / LastTime: ' . $_REQUEST['ts'] . ' )';
-  echo '</div>';
 }
 
 /*

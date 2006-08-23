@@ -30,9 +30,10 @@ function sbox_display()
 
 	if ($modSettings['sbox_Visible'] != '0')
 	{
-		// Load the template!
+	  loadLanguage('sbox');
 		loadTemplate('sbox');
 		template_shout_box();
 	}
 }
+
 ?>

@@ -3,7 +3,7 @@ SMF Shoutbox , German Language Pack
 </id>
 
 <version>
-1.11
+1.12
 </version>
 
 <mod info>
