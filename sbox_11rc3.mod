@@ -3,7 +3,7 @@ SMF Shoutbox
 </id>
 
 <version>
-1.12
+1.13
 </version>
 
 <mod info>
@@ -32,7 +32,12 @@ in the appropriate place at www.simplemachines.org (the preferred option!)
 
 History:
 Version 1.12
-
+* made compatible with SMF 1.1rc3
+* moved basic strings from Modifications.<lang>.php to sbox.<lang>.php so that there now is language fallback to English (and 1 file less to change)
++ check for lock before removing History file
+x JavaScript clear() was reserved, renamed to clearHist()
+x active refresh on new shout
++ included language pack into main setup package so that distribution should be easier
 
 Version 1.11
 + added German language-pack
@@ -84,7 +89,7 @@ Deep and Markus Birth
 </author>
 
 <homepage>
-No homepage available at the moment
+http://mods.simplemachines.org/index.php?mod=412
 </homepage>
 
 <edit file>
@@ -126,17 +131,30 @@ function ModifySboxSettings()
 
 	$config_vars = array
 	(
+	  // Generic stuff
 		array('check', 'sbox_Visible'),
+		array('check', 'sbox_ModsRule'),
+		array('check', 'sbox_DoHistory'),
+		'',
+		// Guest stuff
 		array('check', 'sbox_GuestVisible'),
 		array('check', 'sbox_GuestAllowed'),
+		array('check', 'sbox_GuestBBC'),
+		'',
+		// Visual
 		array('check', 'sbox_SmiliesVisible'),
 		array('check', 'sbox_UserLinksVisible'),
 		array('check', 'sbox_AllowBBC'),
-		array('check', 'sbox_DoHistory'),
+		array('check', 'sbox_NewShoutsBar'),
 		array('int', 'sbox_MaxLines'),
 		array('int', 'sbox_Height'),
+		'',
+		// Miscellaneous
 		array('int', 'sbox_RefreshTime'),
 		array('check', 'sbox_BlockRefresh'),
+		array('check', 'sbox_EnableSounds'),
+		'',
+		// Font stuff
 		array('select', 'sbox_FontFamily1', array(
 												'Garamond, serif' => 'Garamond, serif',
 												'Times, serif' => 'Times, serif',
@@ -204,7 +222,6 @@ function ModifySboxSettings()
 			),
 		array('text', 'sbox_TextColor2'),
 		array('text', 'sbox_BackgroundColor'),
-		array('check', 'sbox_EnableSounds'),
 	);
 
 	// Saving?
@@ -274,15 +291,19 @@ $languagedir/Help.english.php
 
 //SMF Shoutbox
 $helptxt['sbox_Visible'] = 'Here you can decide wether the shoutbox is visible at all or not.';
-$helptxt['sbox_GuestAllowed'] = 'Here you can decide whether guests are allowed to post new shouts.';
+$helptxt['sbox_DoHistory'] = 'Defines whether all shouts should be written to a file so that an Administrator can check what was going on.';
+
 $helptxt['sbox_GuestVisible'] = 'Defines whether the Shoutbox is visible to guests at all.';
-$helptxt['sbox_MaxLines'] = 'Here you can enter the maximal count of lines displayed in the shoutbox.';
-$helptxt['sbox_Height'] = 'Here you can enter the height (pixels) of the shoutbox.';
+$helptxt['sbox_GuestAllowed'] = 'Here you can decide whether guests are allowed to post new shouts.';
+$helptxt['sbox_GuestBBC'] = 'Here you can switch BBCode parsing for Guest-shouts. Note that this won\'t work if the <i>Allow BBCode</i> setting is turned off.';
+
 $helptxt['sbox_SmiliesVisible'] = 'Here you can decide whether smileys are visible or not. They work independently of this setting, though.';
 $helptxt['sbox_UserLinksVisible'] = 'Defines whether the names of shouters are linked to their profile page or not.';
+$helptxt['sbox_AllowBBC'] = 'Defines whether users are allowed to use BBCode in shouts. If disabled, only plain text is displayed - no smileys, no formatting. This option also affects the <i>Allow BBCode for Guest-shouts</i>-option.';
+$helptxt['sbox_NewShoutsBar'] = 'Enable to show a line between new shouts (since the last refresh) and old ones.';
+
 $helptxt['sbox_RefreshTime'] = 'Here you can adjust the refresh time';
 $helptxt['sbox_BlockRefresh'] = 'Defines whether the Shoutbox should stop refreshing after there have been no new shouts for a while. Users can still manually refresh the Shoutbox. The time treshold used is the <i>User online time treshold</i> found in the <i>Basic Features</i>-settings. (currently ' . $modSettings['lastActive'] . ' minutes)';
-$helptxt['sbox_DoHistory'] = 'Defines whether all shouts should be written to a file so that an Administrator can check what was going on.';
-$helptxt['sbox_AllowBBC'] = 'Defines whether users are allowed to use BBCode in shouts. If disabled, only plain text is displayed - no smileys, no formatting.';
 $helptxt['sbox_EnableSounds'] = 'Enables the notification sound, when your nickname was mentioned since the last refresh.';
+
 </add before>

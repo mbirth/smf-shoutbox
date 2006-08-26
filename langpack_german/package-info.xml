@@ -4,7 +4,7 @@
   <name>SMF Shoutbox LanguagePack German</name>
   <id>Deep:SMF_Shoutbox:LangPack_German</id>
   <type>modification</type>
-  <version>1.12</version>
+  <version>1.13</version>
   <install>
     <require-file name="sbox.german.php" destination="$languagedir" />
     <readme type="inline">

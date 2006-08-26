@@ -10,6 +10,8 @@ if (!defined('SMF'))
 
 loadLanguage('sbox');
 $sbox_HistoryFile = $boarddir . '/sbox.history.html';
+$sbox_NickPrefix = '&lt;';
+$sbox_NickSuffix = '&gt;';
 
 // BEGIN: BORROWED FROM http://de2.php.net/manual/en/function.flock.php
 /*
@@ -122,7 +124,7 @@ echo '
       text-decoration: none;
       color: blue;
     }
-    A.Kill {
+    .Kill, A.Kill {
       color: #ff0000;
     }
   </style>';
@@ -136,8 +138,12 @@ if (!empty($_REQUEST['action'])) switch ($_REQUEST['action']) {
       // get current timestamp
       $date = time();
     
+      $posterip = $user_info['ip'];
+      $pip = explode('.', $posterip);
+      $piph = sprintf("%02s%02s%02s%02s", dechex($pip[0]), dechex($pip[1]), dechex($pip[2]), dechex($pip[3]));
+    
       // handle special characters
-      $content = addslashes($content);
+      $content = addslashes($piph . $content);
     
       // insert shout message into database
       $sql = "INSERT INTO " . $db_prefix . "sbox_content (ID_MEMBER, content, time) VALUES ('" . $context['user']['id'] . "', '" . $content . "', '$date')";
@@ -154,12 +160,21 @@ if (!empty($_REQUEST['action'])) switch ($_REQUEST['action']) {
         $ds = date('Y-m-d', $date) . '&nbsp;|&nbsp;' . date('H:i.s', $date);
         
         $content = stripslashes($content); // shouting content
+        $content = substr($content, 8);
         $content = htmlentities($content);
-        if ($modSettings['sbox_AllowBBC'] == '1') {
+        if ($modSettings['sbox_AllowBBC'] == '1' && ($context['user']['id'] > 0 || $modSettings['sbox_GuestBBC'] == '1')) {
           $content = parse_bbc($content);
         }
         
-        $output = '[&nbsp;' . $ds . '&nbsp;]&nbsp;<b>&lt;<a href="' . $scripturl . '?action=profile;u=' . $context['user']['id'] . '" target="_blank" class="' . $divclass . '">' . ((!empty($context['user']['name']))?$context['user']['name']:$context['user']['username']) . '</a>&gt;</b>&nbsp;' . $content . '</div><br />' . "\n";
+        $output = '[&nbsp;' . $ds . '&nbsp;]&nbsp;<b>' . $sbox_NickPrefix;
+        if ($context['user']['id'] > 0) {
+          $output .= '<a href="' . $scripturl . '?action=profile;u=' . $context['user']['id'] . '" target="_blank" class="' . $divclass . '">';
+          $output .= ((!empty($context['user']['name']))?$context['user']['name']:$context['user']['username']);
+          $output .= '</a>';
+        } else {
+          $output .= 'Guest-' . base_convert($piph, 16, 36);
+        }
+        $output .= $sbox_NickSuffix . '</b>&nbsp;' . $content . '</div><br />' . "\n";
         
         if (!file_exists($sbox_HistoryFile)) {
           // TODO: Prepare file ... HTML-header, stylesheet, etc.
@@ -184,7 +199,7 @@ if (!empty($_REQUEST['action'])) switch ($_REQUEST['action']) {
     break;
 
   case 'kill':
-    if  ($context['user']['is_admin'] && !empty($_REQUEST['kill'])) {
+    if  (!empty($_REQUEST['kill']) && ($context['user']['is_admin'] || ($modSettings['sbox_ModsRule'] && allowedTo('manage_boards')))) {
       $sql = 'DELETE FROM ' . $db_prefix . 'sbox_content WHERE id=' . intval($_REQUEST['kill']);
       db_query($sql, __FILE__, __LINE__);
     }
@@ -242,13 +257,15 @@ if(mysql_num_rows($result)) {
     $name = $row['ID_MEMBER'];           // user name
     $date = forum_time(true, $row['time']);           // shouting date and time
     $content = stripslashes($row['content']); // shouting content
+    $piph = substr($content, 0, 8);
+    $content = substr($content, 8);
     $content = htmlentities($content);
-    if ($modSettings['sbox_AllowBBC'] == '1') {
+    if ($modSettings['sbox_AllowBBC'] == '1' && ($name > 0 || $modSettings['sbox_GuestBBC'] == '1')) {
       $content = parse_bbc($content);
     }
 
     if (!empty($_REQUEST['ts']) && !$div && $date<$_REQUEST['ts']) {
-      if ($count > 0) {
+      if ($count > 0 && $modSettings['sbox_NewShoutsBar'] == '1') {
         echo '<hr>' . "\n";
       }
       $div = true;
@@ -286,7 +303,7 @@ if(mysql_num_rows($result)) {
     echo "\n" . '<div class="' . $divclass . '" style="color: #' . $colh . '">'; */
     echo "\n" . '<div class="' . $divclass . '">';
     
-    if ($context['user']['is_admin']) {
+    if ($context['user']['is_admin'] || ($modSettings['sbox_ModsRule'] && allowedTo('manage_boards'))) {
       echo '[<a title="' . $txt['sbox_KillShout'] . '" class="Kill" onClick="return kill();" href="' . $_SERVER['PHP_SELF'] . '?action=kill&kill=' . $row['id'] . '">X</a>]';
     }
     
@@ -304,11 +321,15 @@ if(mysql_num_rows($result)) {
       $content = str_replace($user_info['username'], '<b><u>' . $user_info['username'] . '</u></b>', $content);
     }
     
-    echo '[&nbsp;' . $ds . '&nbsp;]&nbsp;<b>&lt;';
-    if ($modSettings['sbox_UserLinksVisible'] == '1') echo '<a href="' . $scripturl . '?action=profile;u=' . $name . '" target="_top" class="' . $divclass . '">';
-    echo ((!empty($row['realName']))?$row['realName']:$row['memberName']);
-    if ($modSettings['sbox_UserLinksVisible'] == '1') echo '</a>';
-    echo '&gt;</b>&nbsp;' . $content . '</div>';
+    echo '[&nbsp;' . $ds . '&nbsp;]&nbsp;<b>' . $sbox_NickPrefix;
+    if ($name > 0) {
+      if ($modSettings['sbox_UserLinksVisible'] == '1') echo '<a href="' . $scripturl . '?action=profile;u=' . $name . '" target="_top" class="' . $divclass . '">';
+      echo ((!empty($row['realName']))?$row['realName']:$row['memberName']);
+      if ($modSettings['sbox_UserLinksVisible'] == '1') echo '</a>';
+    } else {
+      echo $txt['sbox_Guest'] . '-' . base_convert($piph, 16, 36);
+    }
+    echo $sbox_NickSuffix . '</b>&nbsp;' . $content . '</div>';
   }
   if (($modSettings['sbox_EnableSounds']) && ($alert === true) && ($div === true)) {
     echo '<embed src="' . $boardurl . '/chat-inbound_GSM.wav" hidden="true" autostart="true" loop="false"></embed>' . "\n";

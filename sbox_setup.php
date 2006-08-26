@@ -20,16 +20,24 @@ $overwrite_old_settings = false;
 // List settings here in the format: setting_key => default_value.  Escape any "s. (" => \")
 $mod_settings = array(
 	'sbox_Visible' => '1',
-	'sbox_GuestAllowed' => '0',
+	'sbox_ModsRule' => '0',
+	'sbox_DoHistory' => '1',
+
 	'sbox_GuestVisible' => '0',
+	'sbox_GuestAllowed' => '0',
+	'sbox_GuestBBC' => '0',
+
 	'sbox_SmiliesVisible' => '1',
 	'sbox_UserLinksVisible' => '1',
 	'sbox_AllowBBC' => '1',
-	'sbox_DoHistory' => '1',
+	'sbox_NewShoutsBar' => '1',
 	'sbox_MaxLines' => '50',
 	'sbox_Height' => '180',
+
 	'sbox_RefreshTime' => '20',
 	'sbox_BlockRefresh' => '1',
+	'sbox_EnableSounds' => '0',
+
 	'sbox_FontFamily1' => 'Verdana, sans-serif',
 	'sbox_FontFamily2' => 'Verdana, sans-serif',
 	'sbox_TextSize1' => 'xx-small',
@@ -37,7 +45,6 @@ $mod_settings = array(
 	'sbox_TextSize2' => 'xx-small',
 	'sbox_TextColor2' => '#476c8e',
 	'sbox_BackgroundColor' => '#e5e5e8',
-	'sbox_EnableSounds' => '0',
 );
 
 /******************************************************************************/
@@ -60,11 +67,14 @@ if ($string != '')
 	$result = db_query("
 		" . ($overwrite_old_settings ? 'REPLACE' : 'INSERT IGNORE') . " INTO {$db_prefix}settings
 			(variable, value)
-		VALUES" . substr($string, 0, -1));
+		VALUES" . substr($string, 0, -1), __FILE__, __LINE__);
 
 // Uh-oh spaghetti-oh!
 if ($result === false)
 	echo '<b>Error:</b> Settings insertion failed!<br />';
+
+// drop table if it exists. Should make SMF-update 1.1rc2 -> 1.1rc3 easier.
+$result = mysql_query("DROP TABLE `{$db_prefix}sbox_content`");
 
 $result = db_query("
   			CREATE TABLE `{$db_prefix}sbox_content` (
@@ -72,7 +82,7 @@ $result = db_query("
   			`time` int(10) unsigned NOT NULL,
   			`ID_MEMBER` mediumint(8) unsigned NOT NULL,
     			`content` text NOT NULL,
-    			PRIMARY KEY (`id`))");
+    			PRIMARY KEY (`id`))", __FILE__, __LINE__);
 
 // Uh-oh spaghetti-oh!
 if ($result === false)

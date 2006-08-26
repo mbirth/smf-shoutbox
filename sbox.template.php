@@ -84,6 +84,7 @@ function template_shout_box() {
   </div>';
 }
 
+// BEGIN: Borrowed from theme_postbox($msg) in Subs-Post.php (1.1rc3)
 function sbox_loadSmileys() {
   global $context, $settings, $user_info, $txt, $modSettings, $db_prefix;
   
@@ -160,7 +161,9 @@ function sbox_loadSmileys() {
 	}
 	$settings['smileys_url'] = $modSettings['smileys_url'] . '/' . $user_info['smiley_set'];
 }
+// END: Borrowed from theme_postbox($msg) in Subs-Post.php
 
+// BEGIN: Borrowed from template_postbox(&$message) in Post.template.php (1.1rc3)
 function sbox_printSmileys() {
   global $context, $txt, $settings;
   
@@ -242,5 +245,6 @@ function sbox_printSmileys() {
 			// ]]></script>';
 	}
 }
+// END: Borrowed from template_postbox(&$message) in Post.template.php
 
 ?>
