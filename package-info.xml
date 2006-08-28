@@ -4,15 +4,15 @@
   <name>SMF Shoutbox</name>
   <id>Deep:SMF_Shoutbox</id>
   <type>modification</type>
-  <version>1.13</version>
+  <version>1.14</version>
   <install for="1.1 RC2">
     <require-file name="sbox.php" destination="$sourcedir" />
     <require-file name="sboxDB.php" destination="$sourcedir" />
     <require-file name="sbox.english.php" destination="$languagedir" />
+    <require-file name="sbox.german.php" destination="$languagedir" />
     <require-file name="sbox.template.php" destination="$themedir" />
     <require-file name="sbox_refresh.gif" destination="$themedir/images" />
     <require-file name="chat-inbound_GSM.wav" destination="$boarddir" />
-    <require-file name="sbox_v1.13_german.zip" destination="$boarddir/Packages" />
     <code type="file">sbox_setup.php</code>
     <readme type="inline"><![CDATA[
       This allows you to put a shoutbox on your SMF forum above the board index of the default theme.
@@ -27,10 +27,10 @@
     <require-file name="sbox.php" destination="$sourcedir" />
     <require-file name="sboxDB.php" destination="$sourcedir" />
     <require-file name="sbox.english.php" destination="$languagedir" />
+    <require-file name="sbox.german.php" destination="$languagedir" />
     <require-file name="sbox.template.php" destination="$themedir" />
     <require-file name="sbox_refresh.gif" destination="$themedir/images" />
     <require-file name="chat-inbound_GSM.wav" destination="$boarddir" />
-    <require-file name="sbox_v1.13_german.zip" destination="$boarddir/Packages" />
     <code type="file">sbox_setup.php</code>
     <readme type="inline"><![CDATA[
       This allows you to put a shoutbox on your SMF forum above the board index of the default theme.
@@ -47,11 +47,11 @@
     <remove-file name="$sourcedir/sbox.php" />
     <remove-file name="$sourcedir/sboxDB.php" />
     <remove-file name="$languagedir/sbox.english.php" />
+    <remove-file name="$languagedir/sbox.german.php" />
     <remove-file name="$themedir/sbox.template.php" />
     <remove-file name="$themedir/images/sbox_refresh.gif" />
     <remove-file name="$boarddir/chat-inbound_GSM.wav" />
     <remove-file name="$boarddir/sbox.history.html" />
-    <remove-file name="$boarddir/Packages/sbox_v1.13_german.zip" />
     <code type="file">sbox_remove.php</code>
   </uninstall>
   <uninstall for="1.1 RC3">
@@ -60,11 +60,11 @@
     <remove-file name="$sourcedir/sbox.php" />
     <remove-file name="$sourcedir/sboxDB.php" />
     <remove-file name="$languagedir/sbox.english.php" />
+    <remove-file name="$languagedir/sbox.german.php" />
     <remove-file name="$themedir/sbox.template.php" />
     <remove-file name="$themedir/images/sbox_refresh.gif" />
     <remove-file name="$boarddir/chat-inbound_GSM.wav" />
     <remove-file name="$boarddir/sbox.history.html" />
-    <remove-file name="$boarddir/Packages/sbox_v1.13_german.zip" />
     <code type="file">sbox_remove.php</code>
   </uninstall>
   <install>

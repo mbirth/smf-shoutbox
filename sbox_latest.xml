@@ -17,19 +17,61 @@
 <modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
   <!-- This information needs to be the same as that in the package-info.xml. -->
   <id>Deep:SMF_Shoutbox</id>
-  <version>1.13</version>
+  <version>1.14</version>
 
   <!-- Edit BoardIndex.template.php in the SMF Default Theme. -->
   <file name="$themedir/BoardIndex.template.php">
     <operation>
       <search position="replace"><![CDATA[
+	}
+
 	/* Each category in categories is made up of:
 ]]></search>
       <add><![CDATA[
+	}
+
   // display shoutbox
   if (function_exists('sbox')) sbox();
 
-	/* (SMF Shoutbox added above!) Each category in categories is made up of:
+	/* Each category in categories is made up of:
+]]></add>
+    </operation>
+  </file>
+
+  <!-- Edit BoardIndex.template.php in the classic Theme. -->
+  <file name="$themes_dir/classic/BoardIndex.template.php" error="skip">
+    <operation>
+      <search position="replace"><![CDATA[
+	}
+
+	// Show the "Board name      Topics  Posts    Last Post" header.
+]]></search>
+      <add><![CDATA[
+	}
+
+  // display shoutbox
+  if (function_exists('sbox')) sbox();
+
+	// Show the "Board name      Topics  Posts    Last Post" header.
+]]></add>
+    </operation>
+  </file>
+
+  <!-- Edit BoardIndex.template.php in the Babylon Theme. -->
+  <file name="$themes_dir/babylon/BoardIndex.template.php" error="skip">
+    <operation>
+      <search position="replace"><![CDATA[
+	}
+
+	/* Each category in categories is made up of:
+]]></search>
+      <add><![CDATA[
+	}
+
+  // display shoutbox
+  if (function_exists('sbox')) sbox();
+
+	/* Each category in categories is made up of:
 ]]></add>
     </operation>
   </file>
@@ -37,7 +79,7 @@
   <!-- Edit Subs.php and add sbox(). -->
   <file name="$sourcedir/Subs.php">
     <operation>
-      <search position="end"></search>
+      <search position="end" />
       <add><![CDATA[
 
 function sbox() {
@@ -54,7 +96,7 @@ function sbox() {
   <!-- Edit Help.english.php and add strings. -->
   <file name="$languagedir/Help.english.php">
     <operation>
-      <search position="end"></search>
+      <search position="end" />
       <add><![CDATA[
 
 //SMF Shoutbox
@@ -74,6 +116,34 @@ $helptxt['sbox_NewShoutsBar'] = 'Enable to show a line between new shouts (since
 $helptxt['sbox_RefreshTime'] = 'Here you can adjust the refresh time';
 $helptxt['sbox_BlockRefresh'] = 'Defines whether the Shoutbox should stop refreshing after there have been no new shouts for a while. Users can still manually refresh the Shoutbox. The time treshold used is the <i>User online time treshold</i> found in the <i>Basic Features</i>-settings. (currently ' . $modSettings['lastActive'] . ' minutes)';
 $helptxt['sbox_EnableSounds'] = 'Enables the notification sound, when your nickname was mentioned since the last refresh.';
+
+]]></add>
+    </operation>
+  </file>
+
+  <!-- Edit Help.german.php and add strings. -->
+  <file name="$languagedir/Help.german.php" error="skip">
+    <operation>
+      <search position="end" />
+      <add><![CDATA[
+
+//SMF Shoutbox
+$helptxt['sbox_Visible'] = 'Hier k&ouml;nnen Sie einstellen, ob die Shoutbox sichtbar ist oder nicht. Diese Einstellung gilt f&uuml;r ALLE Benutzer.';
+$helptxt['sbox_ModsRule'] = 'Dies erlaubt jedem, der die <i>moderate_board</i>-Berechtigung auf mindestens einem Board hat, Shouts zu l&ouml;schen.';
+$helptxt['sbox_DoHistory'] = 'Legt fest, ob alle Shouts auch in eine Verlaufsdatei geschrieben werden sollen, so dass ein Administrator angebliche Vorf&auml;lle nachpr&uuml;fen kann.';
+
+$helptxt['sbox_GuestVisible'] = 'Hiermit k&ouml;nnen Sie festlegen, ob G&auml;ste die Shoutbox &uuml;berhaupt sehen k&ouml;nnen oder nicht.';
+$helptxt['sbox_GuestAllowed'] = 'Hier k&ouml;nnen Sie einstellen, ob G&auml;ste die Shoutbox benutzen d&uuml;rfen.';
+$helptxt['sbox_GuestBBC'] = 'Hier k&ouml;nnen Sie BBCode f&uuml;r Gast-Shouts ein- oder ausschalten. Beachten Sie bitte, dass dies auch von der Einstellung <i>BBCode erlauben</i> abh&auml;ngig ist.';
+
+$helptxt['sbox_SmiliesVisible'] = 'Hier k&ouml;nnen Sie einstellen, ob die Smilies sichtbar sind oder nicht. Diese Einstellung gilt f&uuml;r ALLE Benutzer.';
+$helptxt['sbox_UserLinksVisible'] = 'Legt fest, ob die Namen der Shouter mit deren Profilseite verlinkt werden sollen oder nicht.';
+$helptxt['sbox_AllowBBC'] = 'Legt fest, ob Benutzer BBCode in Shouts benutzen k&ouml;nnen. Wenn dies deaktiviert ist, wird nur Klartext angezeigt - ohne Smileys oder Formatierungen. Diese Option beeinflusst auch die <i>BBCode f&uuml;r G&auml;ste erlauben</i>-Option.';
+$helptxt['sbox_NewShoutsBar'] = 'Ist diese Option aktiviert, wird eine Linie zwischen neuen Shouts (seit dem letzten Refresh) und &auml;lteren gezeigt.';
+
+$helptxt['sbox_RefreshTime'] = 'Hier k&ouml;nnen Sie das Aktualisierungsintervall einstellen, also die Anzahl der Sekunden, die vergehen m&uuml;ssen, bevor sich die Shoutbox automatisch aktualisiert.';
+$helptxt['sbox_BlockRefresh'] = 'Legt fest, ob die automatische Aktualisierung nach eine Weile Inaktivit&auml;t automatisch gestoppt werden soll. Benutzer k&ouml;nnen die Shoutbox weiterhin manuell aktualisieren. Die Zeitspanne wird unter <i>Zeit der Benutzeranzeige</i> in den <i>Standard-Funktionen</i> festgelegt. (Momentan ' . $modSettings['lastActive'] . ' Minuten)';
+$helptxt['sbox_EnableSounds'] = 'Aktiviert einen Ton, der gespielt wird, wenn der eigene Nickname in einem neuen Shout auftaucht.';
 
 ]]></add>
     </operation>
@@ -104,7 +174,7 @@ $helptxt['sbox_EnableSounds'] = 'Enables the notification sound, when your nickn
 ]]></add>
     </operation>
     <operation>
-      <search position="end"></search>
+      <search position="end" />
       <add><![CDATA[
 loadLanguage('sbox');
 
