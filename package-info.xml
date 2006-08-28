@@ -14,16 +14,14 @@
     <require-file name="chat-inbound_GSM.wav" destination="$boarddir" />
     <require-file name="sbox_v1.13_german.zip" destination="$boarddir/Packages" />
     <code type="file">sbox_setup.php</code>
-    <readme type="inline">
-      <![CDATA[
+    <readme type="inline"><![CDATA[
       This allows you to put a shoutbox on your SMF forum above the board index of the default theme.
 
     Originally written By Deep (diem4@gmx.net), inspired by Matthew Wolf (a.k.a Grudge)
     Heavily improved by Markus Birth (mbirth@webwriters.de)
     Copyright 2006 - Neither this package or any of it's contents may be distributed without authorisation.
-      ]]>
-    </readme>
-    <modification type="file" format="boardmod">sbox_11rc3.mod</modification>
+    ]]></readme>
+    <modification type="file">sbox_latest.xml</modification>
   </install>
   <install for="1.1 RC3">
     <require-file name="sbox.php" destination="$sourcedir" />
@@ -34,20 +32,18 @@
     <require-file name="chat-inbound_GSM.wav" destination="$boarddir" />
     <require-file name="sbox_v1.13_german.zip" destination="$boarddir/Packages" />
     <code type="file">sbox_setup.php</code>
-    <readme type="inline">
-      <![CDATA[
+    <readme type="inline"><![CDATA[
       This allows you to put a shoutbox on your SMF forum above the board index of the default theme.
 
     Originally written By Deep (diem4@gmx.net), inspired by Matthew Wolf (a.k.a Grudge)
     Heavily improved by Markus Birth (mbirth@webwriters.de)
     Copyright 2006 - Neither this package or any of it's contents may be distributed without authorisation.
-      ]]>
-    </readme>
-    <modification type="file" format="boardmod">sbox_11rc3.mod</modification>
+    ]]></readme>
+    <modification type="file">sbox_latest.xml</modification>
   </install>
   <uninstall for="1.1 RC2">
     <readme type="inline">Uninstall will remove all the changes made by the shoutbox. You must do this before upgrading!</readme>
-    <modification type="file" format="boardmod" reverse="true">sbox_11rc3.mod</modification>
+    <modification type="file" reverse="true">sbox_latest.xml</modification>
     <remove-file name="$sourcedir/sbox.php" />
     <remove-file name="$sourcedir/sboxDB.php" />
     <remove-file name="$languagedir/sbox.english.php" />
@@ -60,7 +56,7 @@
   </uninstall>
   <uninstall for="1.1 RC3">
     <readme type="inline">Uninstall will remove all the changes made by the shoutbox. You must do this before upgrading!</readme>
-    <modification type="file" format="boardmod" reverse="true">sbox_11rc3.mod</modification>
+    <modification type="file" reverse="true">sbox_latest.xml</modification>
     <remove-file name="$sourcedir/sbox.php" />
     <remove-file name="$sourcedir/sboxDB.php" />
     <remove-file name="$languagedir/sbox.english.php" />

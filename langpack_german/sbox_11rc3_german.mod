@@ -42,6 +42,7 @@ $languagedir/Help.german.php
 
 //SMF Shoutbox
 $helptxt['sbox_Visible'] = 'Hier k&ouml;nnen Sie einstellen, ob die Shoutbox sichtbar ist oder nicht. Diese Einstellung gilt f&uuml;r ALLE Benutzer.';
+$helptxt['sbox_ModsRule'] = 'Dies erlaubt jedem, der die <i>moderate_board</i>-Berechtigung auf mindestens einem Board hat, Shouts zu l&ouml;schen.';
 $helptxt['sbox_DoHistory'] = 'Legt fest, ob alle Shouts auch in eine Verlaufsdatei geschrieben werden sollen, so dass ein Administrator angebliche Vorf&auml;lle nachpr&uuml;fen kann.';
 
 $helptxt['sbox_GuestVisible'] = 'Hiermit k&ouml;nnen Sie festlegen, ob G&auml;ste die Shoutbox &uuml;berhaupt sehen k&ouml;nnen oder nicht.';

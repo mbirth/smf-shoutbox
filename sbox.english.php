@@ -12,7 +12,7 @@ $txt['sbox_Guest'] = 'Guest';
 
 // Settings
 $txt['sbox_Visible'] = 'Shoutbox is visible';
-$txt['sbox_ModsRule'] = 'Global Moderators can delete shouts';
+$txt['sbox_ModsRule'] = 'Moderators can delete shouts';
 $txt['sbox_DoHistory'] = 'Create history of shouts';
 
 $txt['sbox_GuestVisible'] = 'Make Shoutbox visible to Guests';

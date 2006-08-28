@@ -1,0 +1,223 @@
+<?xml version="1.0"?>
+<!DOCTYPE modification SYSTEM "modification.dtd">
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	This is a modification file for SMF.
+
+	ATTENTION: If you are trying to install this manually, you should try
+	the package manager.  If it will not work for you, please take a look
+	at the following for information on this format:
+		http://mods.simplemachines.org/docs/manual-install.php
+
+================================================================================
+
+	Modification files can be used to modify files so that they do what
+	your package needs them to do to work properly.
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
+  <!-- This information needs to be the same as that in the package-info.xml. -->
+  <id>Deep:SMF_Shoutbox</id>
+  <version>1.13</version>
+
+  <!-- Edit BoardIndex.template.php in the SMF Default Theme. -->
+  <file name="$themedir/BoardIndex.template.php">
+    <operation>
+      <search position="replace"><![CDATA[
+	/* Each category in categories is made up of:
+]]></search>
+      <add><![CDATA[
+  // display shoutbox
+  if (function_exists('sbox')) sbox();
+
+	/* (SMF Shoutbox added above!) Each category in categories is made up of:
+]]></add>
+    </operation>
+  </file>
+
+  <!-- Edit Subs.php and add sbox(). -->
+  <file name="$sourcedir/Subs.php">
+    <operation>
+      <search position="end"></search>
+      <add><![CDATA[
+
+function sbox() {
+  global $sourcedir;
+
+  include_once("$sourcedir/sbox.php");
+  sbox_display();
+}
+
+]]></add>
+    </operation>
+  </file>
+
+  <!-- Edit Help.english.php and add strings. -->
+  <file name="$languagedir/Help.english.php">
+    <operation>
+      <search position="end"></search>
+      <add><![CDATA[
+
+//SMF Shoutbox
+$helptxt['sbox_Visible'] = 'Here you can decide wether the shoutbox is visible at all or not.';
+$helptxt['sbox_ModsRule'] = 'This enables anyone who has the <i>moderate_board</i> permission on at least one board, to delete shouts.';
+$helptxt['sbox_DoHistory'] = 'Defines whether all shouts should be written to a file so that an Administrator can check what was going on.';
+
+$helptxt['sbox_GuestVisible'] = 'Defines whether the Shoutbox is visible to guests at all.';
+$helptxt['sbox_GuestAllowed'] = 'Here you can decide whether guests are allowed to post new shouts.';
+$helptxt['sbox_GuestBBC'] = 'Here you can switch BBCode parsing for Guest-shouts. Note that this won\'t work if the <i>Allow BBCode</i> setting is turned off.';
+
+$helptxt['sbox_SmiliesVisible'] = 'Here you can decide whether smileys are visible or not. They work independently of this setting, though.';
+$helptxt['sbox_UserLinksVisible'] = 'Defines whether the names of shouters are linked to their profile page or not.';
+$helptxt['sbox_AllowBBC'] = 'Defines whether users are allowed to use BBCode in shouts. If disabled, only plain text is displayed - no smileys, no formatting. This option also affects the <i>Allow BBCode for Guest-shouts</i>-option.';
+$helptxt['sbox_NewShoutsBar'] = 'Enable to show a line between new shouts (since the last refresh) and old ones.';
+
+$helptxt['sbox_RefreshTime'] = 'Here you can adjust the refresh time';
+$helptxt['sbox_BlockRefresh'] = 'Defines whether the Shoutbox should stop refreshing after there have been no new shouts for a while. Users can still manually refresh the Shoutbox. The time treshold used is the <i>User online time treshold</i> found in the <i>Basic Features</i>-settings. (currently ' . $modSettings['lastActive'] . ' minutes)';
+$helptxt['sbox_EnableSounds'] = 'Enables the notification sound, when your nickname was mentioned since the last refresh.';
+
+]]></add>
+    </operation>
+  </file>
+
+  <!-- Edit ModSettings.php and add settings stuff. -->
+  <file name="$sourcedir/ModSettings.php">
+    <operation>
+      <search position="before"><![CDATA[
+		'karma' => 'ModifyKarmaSettings',
+]]></search>
+      <add><![CDATA[
+		'sbox' => 'ModifySboxSettings',
+]]></add>
+    </operation>
+    <operation>
+      <search position="before"><![CDATA[
+			'layout' => array(
+				'title' => $txt['mods_cat_layout'],
+				'href' => $scripturl . '?action=featuresettings;sa=layout;sesc=' . $context['session_id'],
+			),
+]]></search>
+      <add><![CDATA[
+			'sbox' => array(
+				'title' => $txt['sbox_ModTitle'],
+				'href' => $scripturl . '?action=featuresettings;sa=sbox;sesc=' . $context['session_id'],
+			),
+]]></add>
+    </operation>
+    <operation>
+      <search position="end"></search>
+      <add><![CDATA[
+loadLanguage('sbox');
+
+function ModifySboxSettings() {
+  global $txt, $scripturl, $context, $settings, $sc;
+
+  $config_vars = array(
+    // Generic stuff
+    array('check', 'sbox_Visible'),
+    array('check', 'sbox_ModsRule'),
+    array('check', 'sbox_DoHistory'),
+    '',
+    // Guest stuff
+    array('check', 'sbox_GuestVisible'),
+    array('check', 'sbox_GuestAllowed'),
+    array('check', 'sbox_GuestBBC'),
+    '',
+    // Visual
+    array('check', 'sbox_SmiliesVisible'),
+    array('check', 'sbox_UserLinksVisible'),
+    array('check', 'sbox_AllowBBC'),
+    array('check', 'sbox_NewShoutsBar'),
+    array('int', 'sbox_MaxLines'),
+    array('int', 'sbox_Height'),
+    '',
+    // Miscellaneous
+    array('int', 'sbox_RefreshTime'),
+    array('check', 'sbox_BlockRefresh'),
+    array('check', 'sbox_EnableSounds'),
+    '',
+    // Font stuff
+    array('select', 'sbox_FontFamily1', array(
+        'Garamond, serif' => 'Garamond, serif',
+        'Times, serif' => 'Times, serif',
+        'Arial, Helvetica, sans-serif' => 'Arial, Helvetica, sans-serif',
+        'Tahoma, Helvetica, sans-sarif' => 'Tahoma, Helvetica, sans-sarif',
+        'Verdana, sans-serif' => 'Verdana, sans-serif',
+        'cursive' => 'cursive',
+        'Palatino, fantasy' => 'Palatino, fantasy',
+        'Courier, monospace' => 'Courier, monospace',
+      ),
+    ),
+    array('select', 'sbox_FontFamily2', array(
+        'Garamond, serif' => 'Garamond, serif',
+        'Times, serif' => 'Times, serif',
+        'Arial, Helvetica, sans-serif' => 'Arial, Helvetica, sans-serif',
+        'Tahoma, Helvetica, sans-sarif' => 'Tahoma, Helvetica, sans-sarif',
+        'Verdana, sans-serif' => 'Verdana, sans-serif',
+        'cursive' => 'cursive',
+        'Palatino, fantasy' => 'Palatino, fantasy',
+        'Courier, monospace' => 'Courier, monospace'
+      ),
+    ),
+    array('select', 'sbox_TextSize1', array(
+        '6pt' => '6pt',
+        '7pt' => '7pt',
+        '8pt' => '8pt',
+        '9pt' => '9pt',
+        '10pt' => '10pt',
+        '11pt' => '11pt',
+        '12pt' => '12pt',
+        '13pt' => '13pt',
+        '14pt' => '14pt',
+        '15pt' => '15pt',
+        '16pt' => '16pt',
+        'xx-small' => 'xx-small',
+        'x-small' => 'x-small',
+        'small' => 'small',
+        'medium' => 'medium',
+        'large' => 'large',
+        'x-large' => 'x-large',
+        'xx-large' => 'xx-large'
+      ),
+    ),
+    array('text', 'sbox_TextColor1'),
+    array('select', 'sbox_TextSize2', array(
+        '6pt' => '6pt',
+        '7pt' => '7pt',
+        '8pt' => '8pt',
+        '9pt' => '9pt',
+        '10pt' => '10pt',
+        '11pt' => '11pt',
+        '12pt' => '12pt',
+        '13pt' => '13pt',
+        '14pt' => '14pt',
+        '15pt' => '15pt',
+        '16pt' => '16pt',
+        'xx-small' => 'xx-small',
+        'x-small' => 'x-small',
+        'small' => 'small',
+        'medium' => 'medium',
+        'large' => 'large',
+        'x-large' => 'x-large',
+        'xx-large' => 'xx-large'
+      ),
+    ),
+    array('text', 'sbox_TextColor2'),
+    array('text', 'sbox_BackgroundColor'),
+  );
+
+  // Saving?
+  if (isset($_GET['save'])) {
+    saveDBSettings($config_vars);
+    redirectexit('action=featuresettings;sa=sbox');
+  }
+
+  $context['post_url'] = $scripturl . '?action=featuresettings2;save;sa=sbox';
+  $context['settings_title'] = $txt['sbox_ModTitle'];
+
+  prepareDBSettingContext($config_vars);
+}
+
+]]></add>
+    </operation>
+  </file>
+</modification>

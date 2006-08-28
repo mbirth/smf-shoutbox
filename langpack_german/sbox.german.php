@@ -12,7 +12,7 @@ $txt['sbox_Guest'] = 'Gast';
 
 // Einstellungen
 $txt['sbox_Visible'] = 'Shoutbox ist sichtbar';
-$txt['sbox_ModsRule'] = 'Global-Moderatoren k&ouml;nnen Shouts l&ouml;schen';
+$txt['sbox_ModsRule'] = 'Moderatoren k&ouml;nnen Shouts l&ouml;schen';
 $txt['sbox_DoHistory'] = 'Shout-Verlauf anlegen';
 
 $txt['sbox_GuestVisible'] = 'Shoutbox ist f&uuml;r G&auml;ste sichtbar';

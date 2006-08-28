@@ -199,7 +199,7 @@ if (!empty($_REQUEST['action'])) switch ($_REQUEST['action']) {
     break;
 
   case 'kill':
-    if  (!empty($_REQUEST['kill']) && ($context['user']['is_admin'] || ($modSettings['sbox_ModsRule'] && allowedTo('manage_boards')))) {
+    if  (!empty($_REQUEST['kill']) && ($context['user']['is_admin'] || ($modSettings['sbox_ModsRule'] && count(boardsAllowedTo('moderate_board'))>0))) {
       $sql = 'DELETE FROM ' . $db_prefix . 'sbox_content WHERE id=' . intval($_REQUEST['kill']);
       db_query($sql, __FILE__, __LINE__);
     }
@@ -303,7 +303,7 @@ if(mysql_num_rows($result)) {
     echo "\n" . '<div class="' . $divclass . '" style="color: #' . $colh . '">'; */
     echo "\n" . '<div class="' . $divclass . '">';
     
-    if ($context['user']['is_admin'] || ($modSettings['sbox_ModsRule'] && allowedTo('manage_boards'))) {
+    if ($context['user']['is_admin'] || ($modSettings['sbox_ModsRule'] && count(boardsAllowedTo('moderate_board'))>0)) {
       echo '[<a title="' . $txt['sbox_KillShout'] . '" class="Kill" onClick="return kill();" href="' . $_SERVER['PHP_SELF'] . '?action=kill&kill=' . $row['id'] . '">X</a>]';
     }
     
