@@ -76,6 +76,25 @@
     </operation>
   </file>
 
+  <!-- Edit BoardIndex.template.php in the blackTed Theme. -->
+  <file name="$themes_dir/blackTed/BoardIndex.template.php" error="skip">
+    <operation>
+      <search position="replace"><![CDATA[
+	}
+
+	/* Each category in categories is made up of:
+]]></search>
+      <add><![CDATA[
+	}
+
+  // display shoutbox
+  if (function_exists('sbox')) sbox();
+
+	/* Each category in categories is made up of:
+]]></add>
+    </operation>
+  </file>
+
   <!-- Edit Subs.php and add sbox(). -->
   <file name="$sourcedir/Subs.php">
     <operation>

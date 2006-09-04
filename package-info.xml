@@ -5,7 +5,7 @@
   <id>Deep:SMF_Shoutbox</id>
   <type>modification</type>
   <version>1.14</version>
-  <install for="1.1 RC2">
+  <install for="1.1 RC2, 1.1 RC3">
     <require-file name="sbox.php" destination="$sourcedir" />
     <require-file name="sboxDB.php" destination="$sourcedir" />
     <require-file name="sbox.english.php" destination="$languagedir" />
@@ -23,38 +23,7 @@
     ]]></readme>
     <modification type="file">sbox_latest.xml</modification>
   </install>
-  <install for="1.1 RC3">
-    <require-file name="sbox.php" destination="$sourcedir" />
-    <require-file name="sboxDB.php" destination="$sourcedir" />
-    <require-file name="sbox.english.php" destination="$languagedir" />
-    <require-file name="sbox.german.php" destination="$languagedir" />
-    <require-file name="sbox.template.php" destination="$themedir" />
-    <require-file name="sbox_refresh.gif" destination="$themedir/images" />
-    <require-file name="chat-inbound_GSM.wav" destination="$boarddir" />
-    <code type="file">sbox_setup.php</code>
-    <readme type="inline"><![CDATA[
-      This allows you to put a shoutbox on your SMF forum above the board index of the default theme.
-
-    Originally written By Deep (diem4@gmx.net), inspired by Matthew Wolf (a.k.a Grudge)
-    Heavily improved by Markus Birth (mbirth@webwriters.de)
-    Copyright 2006 - Neither this package or any of it's contents may be distributed without authorisation.
-    ]]></readme>
-    <modification type="file">sbox_latest.xml</modification>
-  </install>
-  <uninstall for="1.1 RC2">
-    <readme type="inline">Uninstall will remove all the changes made by the shoutbox. You must do this before upgrading!</readme>
-    <modification type="file" reverse="true">sbox_latest.xml</modification>
-    <remove-file name="$sourcedir/sbox.php" />
-    <remove-file name="$sourcedir/sboxDB.php" />
-    <remove-file name="$languagedir/sbox.english.php" />
-    <remove-file name="$languagedir/sbox.german.php" />
-    <remove-file name="$themedir/sbox.template.php" />
-    <remove-file name="$themedir/images/sbox_refresh.gif" />
-    <remove-file name="$boarddir/chat-inbound_GSM.wav" />
-    <remove-file name="$boarddir/sbox.history.html" />
-    <code type="file">sbox_remove.php</code>
-  </uninstall>
-  <uninstall for="1.1 RC3">
+  <uninstall for="1.1 RC2, 1.1 RC3">
     <readme type="inline">Uninstall will remove all the changes made by the shoutbox. You must do this before upgrading!</readme>
     <modification type="file" reverse="true">sbox_latest.xml</modification>
     <remove-file name="$sourcedir/sbox.php" />

@@ -9,6 +9,7 @@ $txt['sbox_History'] = 'Verlauf';
 $txt['sbox_HistoryClear'] = 'Verlauf l&ouml;schen';
 $txt['sbox_HistoryNotFound'] = 'Kein Verlauf gefunden.';
 $txt['sbox_Guest'] = 'Gast';
+$txt['sbox_TypeShout'] = '<Geben Sie Ihre Nachricht ein und drücken Sie ENTER>';
 
 // Einstellungen
 $txt['sbox_Visible'] = 'Shoutbox ist sichtbar';

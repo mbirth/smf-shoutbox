@@ -70,6 +70,19 @@ function locked_filewrite($filename, $data, $timeLimit = 300000, $staleAge = 5) 
 }
 // END: BORROWED FROM http://de2.php.net/manual/en/function.flock.php
 
+function missinghtmlentities($text) {
+  // entitify missing characters, ignore entities already there (Unicode / UTF8) (hopefully in &#123;-notation)
+  $split = preg_split('/(&#[\d]+;)/', $text, -1, PREG_SPLIT_DELIM_CAPTURE);
+  $result = '';
+  foreach ($split as $s) {
+    if (substr($s, 0, 2) != '&#' || substr($s, -1, 1) != ';') {
+      $result .= htmlentities($s, ENT_NOQUOTES, $context['character_set']);
+    } else {
+      $result .= $s;
+    }
+  }
+  return $result;
+}
 
 //display html header
 echo '<html xmlns="http://www.w3.org/1999/xhtml"' . ($context['right_to_left']?' dir="rtl"':'') . '>
@@ -117,7 +130,10 @@ echo '
     }
     
     body {
-      padding: 0px 0px 0px 0px;
+      width: 100%;
+      padding: 0;
+      margin: 0;
+      border: 0;
       background-color: ' . $modSettings['sbox_BackgroundColor'] . ';
     }
     DIV.Even A[target="_blank"], DIV.Odd A[target="_blank"] {
@@ -134,7 +150,7 @@ if (!empty($_REQUEST['action'])) switch ($_REQUEST['action']) {
  
   case 'write':
     if  (((!$context['user']['is_guest']) || ($modSettings['sbox_GuestAllowed'] == '1')) && !empty($_REQUEST['sboxText'])) {
-      $content=$_REQUEST['sboxText'];
+      $content = $_REQUEST['sboxText'];
       // get current timestamp
       $date = time();
     
@@ -161,7 +177,7 @@ if (!empty($_REQUEST['action'])) switch ($_REQUEST['action']) {
         
         $content = stripslashes($content); // shouting content
         $content = substr($content, 8);
-        $content = htmlentities($content);
+        $content = missinghtmlentities($content);
         if ($modSettings['sbox_AllowBBC'] == '1' && ($context['user']['id'] > 0 || $modSettings['sbox_GuestBBC'] == '1')) {
           $content = parse_bbc($content);
         }
@@ -259,7 +275,8 @@ if(mysql_num_rows($result)) {
     $content = stripslashes($row['content']); // shouting content
     $piph = substr($content, 0, 8);
     $content = substr($content, 8);
-    $content = htmlentities($content);
+    censorText($content);
+    $content = missinghtmlentities($content);
     if ($modSettings['sbox_AllowBBC'] == '1' && ($name > 0 || $modSettings['sbox_GuestBBC'] == '1')) {
       $content = parse_bbc($content);
     }

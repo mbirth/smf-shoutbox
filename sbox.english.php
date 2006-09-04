@@ -9,6 +9,7 @@ $txt['sbox_History'] = 'History';
 $txt['sbox_HistoryClear'] = 'Clear history';
 $txt['sbox_HistoryNotFound'] = 'No history found.';
 $txt['sbox_Guest'] = 'Guest';
+$txt['sbox_TypeShout'] = '<Type your message and press ENTER>';
 
 // Settings
 $txt['sbox_Visible'] = 'Shoutbox is visible';

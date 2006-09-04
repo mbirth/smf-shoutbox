@@ -47,15 +47,18 @@ function template_shout_box() {
 						<table width="100%" border="0" cellspacing="1" cellpadding="0">
 							<tr>
 								<td align="center" valign="middle">
-     	  					<form name="sbox" action="' . $sourceurl . '/sboxDB.php?action=write" method="post" target="sboxframe" style="margin: 0;" onsubmit="setTimeout(\'clearSbox()\', 500);">
+     	  					<form name="sbox" action="' . $sourceurl . '/sboxDB.php?action=write" method="post" target="sboxframe" style="margin: 0;" onsubmit="if (this.sboxText.value == \'' . $txt['sbox_TypeShout'] . '\') return false; else setTimeout(\'clearSbox()\', 500);" enctype="multipart/form-data" accept-charset="' . $context['character_set'] . '">
    									<a href="' . $sourceurl . '/sboxDB.php?" target="sboxframe"><img src="'.$imgdir.'sbox_refresh.gif" border="0" width="16" height="17" align="absmiddle" alt="' . $txt['sbox_Refresh'] . '" /></a>';
 	if ((!$context['user']['is_guest']) || ($modSettings['sbox_GuestAllowed'] == "1")) {
 	  echo '
 			      			  <input type="hidden" name="ts" value="'.forum_time(true).'">
-										<input class="windowbg2" type="text" name="sboxText" size="100" maxlength="320" />&nbsp;<input type="submit" class="input" value="&nbsp;shout&nbsp;" />';
+										<input class="windowbg2" type="text" name="sboxText" size="100" maxlength="320" onFocus="if (this.value==\'' . $txt['sbox_TypeShout'] . '\') this.value = \'\';" onBlur="if (this.value==\'\') this.value=\'' . $txt['sbox_TypeShout'] . '\';" />&nbsp;<input type="submit" class="input" value="&nbsp;shout&nbsp;" />';
 	}
   echo '
           				</form>
+                  <script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
+                    document.sbox.sboxText.value = \'' . $txt['sbox_TypeShout'] . '\';
+                  // ]]></script>
 								</td>
 							</tr>';
 
