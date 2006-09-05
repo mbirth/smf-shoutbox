@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE modification SYSTEM "modification.dtd">
+<!DOCTYPE modification SYSTEM "http://www.simplemachines.org/xml/modification">
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	This is a modification file for SMF.
 
@@ -136,6 +136,8 @@ $helptxt['sbox_RefreshTime'] = 'Here you can adjust the refresh time';
 $helptxt['sbox_BlockRefresh'] = 'Defines whether the Shoutbox should stop refreshing after there have been no new shouts for a while. Users can still manually refresh the Shoutbox. The time treshold used is the <i>User online time treshold</i> found in the <i>Basic Features</i>-settings. (currently ' . $modSettings['lastActive'] . ' minutes)';
 $helptxt['sbox_EnableSounds'] = 'Enables the notification sound, when your nickname was mentioned since the last refresh.';
 
+$helptxt['sbox_DarkThemes'] = 'Enter all of your dark theme\'s directories separated by a vertical line. For those themes, every second shout will have the <i>2. Font color for dark themes</i> instead of that for light ones. It\'s your turn to find those two colors matching (or being readable in) all your themes.';
+
 ]]></add>
     </operation>
   </file>
@@ -163,6 +165,8 @@ $helptxt['sbox_NewShoutsBar'] = 'Ist diese Option aktiviert, wird eine Linie zwi
 $helptxt['sbox_RefreshTime'] = 'Hier k&ouml;nnen Sie das Aktualisierungsintervall einstellen, also die Anzahl der Sekunden, die vergehen m&uuml;ssen, bevor sich die Shoutbox automatisch aktualisiert.';
 $helptxt['sbox_BlockRefresh'] = 'Legt fest, ob die automatische Aktualisierung nach eine Weile Inaktivit&auml;t automatisch gestoppt werden soll. Benutzer k&ouml;nnen die Shoutbox weiterhin manuell aktualisieren. Die Zeitspanne wird unter <i>Zeit der Benutzeranzeige</i> in den <i>Standard-Funktionen</i> festgelegt. (Momentan ' . $modSettings['lastActive'] . ' Minuten)';
 $helptxt['sbox_EnableSounds'] = 'Aktiviert einen Ton, der gespielt wird, wenn der eigene Nickname in einem neuen Shout auftaucht.';
+
+$helptxt['sbox_DarkThemes'] = 'Geben Sie hier die Verzeichnisnamen Ihrer dunkleren Themen getrennt durch eine vertikale Linie an. F&uuml;r diese wird dann f&uuml;r jeden zweiten Shout die <i>2. Schriftfarbe f&uuml;r dunkle Themes</i> verwendet. Es liegt an Ihnen, eine Farbe zu finden, die in s&auml;mtlichen Ihrer dunklen Themen gut lesbar ist.';
 
 ]]></add>
     </operation>
@@ -225,18 +229,7 @@ function ModifySboxSettings() {
     array('check', 'sbox_EnableSounds'),
     '',
     // Font stuff
-    array('select', 'sbox_FontFamily1', array(
-        'Garamond, serif' => 'Garamond, serif',
-        'Times, serif' => 'Times, serif',
-        'Arial, Helvetica, sans-serif' => 'Arial, Helvetica, sans-serif',
-        'Tahoma, Helvetica, sans-sarif' => 'Tahoma, Helvetica, sans-sarif',
-        'Verdana, sans-serif' => 'Verdana, sans-serif',
-        'cursive' => 'cursive',
-        'Palatino, fantasy' => 'Palatino, fantasy',
-        'Courier, monospace' => 'Courier, monospace',
-      ),
-    ),
-    array('select', 'sbox_FontFamily2', array(
+    array('select', 'sbox_FontFamily', array(
         'Garamond, serif' => 'Garamond, serif',
         'Times, serif' => 'Times, serif',
         'Arial, Helvetica, sans-serif' => 'Arial, Helvetica, sans-serif',
@@ -247,7 +240,7 @@ function ModifySboxSettings() {
         'Courier, monospace' => 'Courier, monospace'
       ),
     ),
-    array('select', 'sbox_TextSize1', array(
+    array('select', 'sbox_TextSize', array(
         '6pt' => '6pt',
         '7pt' => '7pt',
         '8pt' => '8pt',
@@ -269,29 +262,8 @@ function ModifySboxSettings() {
       ),
     ),
     array('text', 'sbox_TextColor1'),
-    array('select', 'sbox_TextSize2', array(
-        '6pt' => '6pt',
-        '7pt' => '7pt',
-        '8pt' => '8pt',
-        '9pt' => '9pt',
-        '10pt' => '10pt',
-        '11pt' => '11pt',
-        '12pt' => '12pt',
-        '13pt' => '13pt',
-        '14pt' => '14pt',
-        '15pt' => '15pt',
-        '16pt' => '16pt',
-        'xx-small' => 'xx-small',
-        'x-small' => 'x-small',
-        'small' => 'small',
-        'medium' => 'medium',
-        'large' => 'large',
-        'x-large' => 'x-large',
-        'xx-large' => 'xx-large'
-      ),
-    ),
+    array('text', 'sbox_DarkThemes'),
     array('text', 'sbox_TextColor2'),
-    array('text', 'sbox_BackgroundColor'),
   );
 
   // Saving?

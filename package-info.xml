@@ -5,6 +5,7 @@
   <id>Deep:SMF_Shoutbox</id>
   <type>modification</type>
   <version>1.14</version>
+
   <install for="1.1 RC2, 1.1 RC3">
     <require-file name="sbox.php" destination="$sourcedir" />
     <require-file name="sboxDB.php" destination="$sourcedir" />
@@ -23,8 +24,70 @@
     ]]></readme>
     <modification type="file">sbox_latest.xml</modification>
   </install>
+
+  <upgrade from="1.10" for="1.1 RC2, 1.1 RC3">
+    <readme type="inline"><![CDATA[Thanks for trying the shiny new update feature. Although the Package manager might show you an error, the upgrade should work.
+
+PLEASE UNINSTALL ANY LANGUAGE PACK FOR SHOUTBOX BEFORE UPGRADING!]]></readme>
+    <modification type="file" reverse="true" format="boardmod">sbox_110.mod</modification>
+    <require-file name="sbox.php" destination="$sourcedir" />
+    <require-file name="sboxDB.php" destination="$sourcedir" />
+    <require-file name="sbox.english.php" destination="$languagedir" />
+    <require-file name="sbox.german.php" destination="$languagedir" />
+    <require-file name="sbox.template.php" destination="$themedir" />
+    <require-file name="sbox_refresh.gif" destination="$themedir/images" />
+    <require-file name="chat-inbound_GSM.wav" destination="$boarddir" />
+    <code type="file">sbox_upgrade.php</code>
+    <modification type="file">sbox_latest.xml</modification>
+  </upgrade>
+  <upgrade from="1.11" for="1.1 RC2, 1.1 RC3">
+    <readme type="inline"><![CDATA[Thanks for trying the shiny new update feature. Although the Package manager might show you an error, the upgrade should work.
+
+PLEASE UNINSTALL ANY LANGUAGE PACK FOR SHOUTBOX BEFORE UPGRADING!]]></readme>
+    <modification type="file" reverse="true" format="boardmod">sbox_111.mod</modification>
+    <require-file name="sbox.php" destination="$sourcedir" />
+    <require-file name="sboxDB.php" destination="$sourcedir" />
+    <require-file name="sbox.english.php" destination="$languagedir" />
+    <require-file name="sbox.german.php" destination="$languagedir" />
+    <require-file name="sbox.template.php" destination="$themedir" />
+    <require-file name="sbox_refresh.gif" destination="$themedir/images" />
+    <require-file name="chat-inbound_GSM.wav" destination="$boarddir" />
+    <code type="file">sbox_upgrade.php</code>
+    <modification type="file">sbox_latest.xml</modification>
+  </upgrade>
+  <upgrade from="1.12" for="1.1 RC2, 1.1 RC3">
+    <readme type="inline"><![CDATA[Thanks for trying the shiny new update feature. Although the Package manager might show you an error, the upgrade should work.
+
+PLEASE UNINSTALL ANY LANGUAGE PACK FOR SHOUTBOX BEFORE UPGRADING!]]></readme>
+    <modification type="file" reverse="true" format="boardmod">sbox_112.mod</modification>
+    <require-file name="sbox.php" destination="$sourcedir" />
+    <require-file name="sboxDB.php" destination="$sourcedir" />
+    <require-file name="sbox.english.php" destination="$languagedir" />
+    <require-file name="sbox.german.php" destination="$languagedir" />
+    <require-file name="sbox.template.php" destination="$themedir" />
+    <require-file name="sbox_refresh.gif" destination="$themedir/images" />
+    <require-file name="chat-inbound_GSM.wav" destination="$boarddir" />
+    <code type="file">sbox_upgrade.php</code>
+    <modification type="file">sbox_latest.xml</modification>
+  </upgrade>
+  <upgrade from="1.13" for="1.1 RC2, 1.1 RC3">
+    <readme type="inline"><![CDATA[Thanks for trying the shiny new update feature. Although the Package manager might show you an error, the upgrade should work.
+
+PLEASE UNINSTALL ANY LANGUAGE PACK FOR SHOUTBOX BEFORE UPGRADING!]]></readme>
+    <modification type="file" reverse="true" format="boardmod">sbox_113.mod</modification>
+    <require-file name="sbox.php" destination="$sourcedir" />
+    <require-file name="sboxDB.php" destination="$sourcedir" />
+    <require-file name="sbox.english.php" destination="$languagedir" />
+    <require-file name="sbox.german.php" destination="$languagedir" />
+    <require-file name="sbox.template.php" destination="$themedir" />
+    <require-file name="sbox_refresh.gif" destination="$themedir/images" />
+    <require-file name="chat-inbound_GSM.wav" destination="$boarddir" />
+    <code type="file">sbox_upgrade.php</code>
+    <modification type="file">sbox_latest.xml</modification>
+  </upgrade>
+
   <uninstall for="1.1 RC2, 1.1 RC3">
-    <readme type="inline">Uninstall will remove all the changes made by the shoutbox. You must do this before upgrading!</readme>
+    <readme type="inline">Uninstall will remove all the changes made by the shoutbox.</readme>
     <modification type="file" reverse="true">sbox_latest.xml</modification>
     <remove-file name="$sourcedir/sbox.php" />
     <remove-file name="$sourcedir/sboxDB.php" />

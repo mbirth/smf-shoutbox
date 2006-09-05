@@ -71,21 +71,6 @@ if ($string != '')
 if ($result === false)
   echo '<b>Error:</b> Settings insertion failed!<br />';
 
-// drop table if it exists. Should make SMF-update 1.1rc2 -> 1.1rc3 easier.
-$result = mysql_query("DROP TABLE `{$db_prefix}sbox_content`");
-
-$result = db_query("
-        CREATE TABLE `{$db_prefix}sbox_content` (
-        `id` int(11) unsigned NOT NULL auto_increment, 
-        `time` int(10) unsigned NOT NULL,
-        `ID_MEMBER` mediumint(8) unsigned NOT NULL,
-          `content` text NOT NULL,
-          PRIMARY KEY (`id`))", __FILE__, __LINE__);
-
-// Uh-oh spaghetti-oh!
-if ($result === false)
-  echo '<b>Error:</b> Table setup failed!<br />';
-
 if (file_exists($sourcedir . '/sboxDB.php')) {
   $result = chmod($sourcedir . '/sboxDB.php', 0644);
   if ($result === false)

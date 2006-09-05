@@ -9,22 +9,34 @@ if (!defined('SMF'))
   die('Hacking attempt...');
 
 loadLanguage('sbox');
+
+/***[ BEGIN CONFIGURATION ]***************************************************/
+
 $sbox_HistoryFile = $boarddir . '/sbox.history.html';
-$sbox_NickPrefix = '&lt;';
+
+$sbox_NickPrefix = '&lt;';       // this won't be linked to the profile page
+$sbox_NickInnerPrefix = '<b>';   // this will be linked to the profile page, use formatting tags (<B>) here
+$sbox_NickInnerSuffix = '</b>';  // so that they are applied inside the <A>, otherwise they won't work
 $sbox_NickSuffix = '&gt;';
+
+$sbox_DatePrefix = '[';
+$sbox_DateSeparator = '&nbsp;';    // separates weekday from time
+$sbox_DateSuffix = ']';
+
+/***[ END CONFIGURATION ]*****************************************************/
 
 // BEGIN: BORROWED FROM http://de2.php.net/manual/en/function.flock.php
 /*
  * I hope this is usefull. 
  * If mkdir() is atomic, 
  * then we do not need to worry about race conditions while trying to make the lockDir,
- * unless of course were writing to NFS, for which this function will be useless.
- * so thats why i pulled out the usleep(rand()) peice from the last version
+ * unless of course we're writing to NFS, for which this function will be useless.
+ * so thats why i pulled out the usleep(rand()) piece from the last version
  *
  * Again, its important to tailor some of the parameters to ones indivdual usage
  * I set the default $timeLimit to 3/10th's of a second (maximum time allowed to achieve a lock), 
- * but if your writing some extrememly large files, and/or your server is very slow, you may need to increase it.
- * Obviously, the $staleAge of the lock directory will be important to consider as well if the writing operations might take  a while.
+ * but if you're writing some extrememly large files, and/or your server is very slow, you may need to increase it.
+ * Obviously, the $staleAge of the lock directory will be important to consider as well if the writing operations might take a while.
  * My defaults are extrememly general and you're encouraged to set your own
  *
  * $timeLimit is in microseconds
@@ -101,6 +113,14 @@ if (($delta > $modSettings['lastActive']*60) && ($modSettings['sbox_BlockRefresh
   <meta http-equiv="refresh" content="' . $modSettings['sbox_RefreshTime'] . ';URL=sboxDB.php?ts=' . time() . '">';
 }
 
+$sbox_CurTheme = strtolower(substr($settings['theme_url'], strrpos($settings['theme_url'], '/')+1));
+$sbox_DarkThemes = explode('|', strtolower($modSettings['sbox_DarkThemes']));
+if (in_array($sbox_CurTheme, $sbox_DarkThemes)) {
+  $sbox_TextColor2 = $modSettings['sbox_TextColor2'];
+} else {
+  $sbox_TextColor2 = $modSettings['sbox_TextColor1'];
+}
+
 echo '
   <link rel="stylesheet" type="text/css" href="' . $settings['theme_url'] . '/style.css?rc2" />
   <script language="JavaScript" type="text/javascript"><!-- // --><![CDATA[
@@ -111,22 +131,21 @@ echo '
     if (parent && parent.document.sbox.ts) {
       parent.document.sbox.ts.value = ' . forum_time(true) . ';
     }
-    // if (parent.document.sbox.ts.value != ' . forum_time(true) . ') alert(\'Time mismatch! (\'+parent.document.sbox.ts.value+\' / ' . forum_time(true) . ')\');
     // ]]></script>
   <style type="text/css">
-    .Odd, A.Odd {
-      font-family: ' . $modSettings['sbox_FontFamily1'] . ';
+  
+    .windowbg2 {
+      font-family: ' . $modSettings['sbox_FontFamily'] . ';
       font-style: normal;
-      font-size: ' . $modSettings['sbox_TextSize1'] . ';
+      font-size: ' . $modSettings['sbox_TextSize'] . ';
       font-weight: normal;
-      color: ' . $modSettings['sbox_TextColor1'] . ';
-    } 
-    .Even, A.Even {
-      font-family: ' . $modSettings['sbox_FontFamily2'] . ';
-      font-style: normal;
-      font-size: ' . $modSettings['sbox_TextSize2'] . ';
+      text-decoration: none;
+    }
+
+    .Even {
+      color: ' . $sbox_TextColor2 . ';
       font-weight: normal;
-      color: ' . $modSettings['sbox_TextColor2'] . ';
+      text-decoration: none;
     }
     
     body {
@@ -134,12 +153,8 @@ echo '
       padding: 0;
       margin: 0;
       border: 0;
-      background-color: ' . $modSettings['sbox_BackgroundColor'] . ';
     }
-    DIV.Even A[target="_blank"], DIV.Odd A[target="_blank"] {
-      text-decoration: none;
-      color: blue;
-    }
+ 
     .Kill, A.Kill {
       color: #ff0000;
     }
@@ -173,7 +188,7 @@ if (!empty($_REQUEST['action'])) switch ($_REQUEST['action']) {
       
       // write into history if needed
       if ($modSettings['sbox_DoHistory'] == '1') {
-        $ds = date('Y-m-d', $date) . '&nbsp;|&nbsp;' . date('H:i.s', $date);
+        $ds = $sbox_DatePrefix . date('Y-m-d', $date) . $sbox_DateSeparator . date('H:i.s', $date) . $sbox_DateSuffix;
         
         $content = stripslashes($content); // shouting content
         $content = substr($content, 8);
@@ -182,15 +197,15 @@ if (!empty($_REQUEST['action'])) switch ($_REQUEST['action']) {
           $content = parse_bbc($content);
         }
         
-        $output = '[&nbsp;' . $ds . '&nbsp;]&nbsp;<b>' . $sbox_NickPrefix;
+        $output = $ds . '&nbsp;' . $sbox_NickPrefix;
         if ($context['user']['id'] > 0) {
           $output .= '<a href="' . $scripturl . '?action=profile;u=' . $context['user']['id'] . '" target="_blank" class="' . $divclass . '">';
-          $output .= ((!empty($context['user']['name']))?$context['user']['name']:$context['user']['username']);
+          $output .= $sbox_NickInnerPrefix . ((!empty($context['user']['name']))?$context['user']['name']:$context['user']['username']) . $sbox_NickInnerSuffix;
           $output .= '</a>';
         } else {
-          $output .= 'Guest-' . base_convert($piph, 16, 36);
+          $output .= $sbox_NickInnerPrefix . 'Guest-' . base_convert($piph, 16, 36) . $sbox_NickInnerSuffix;
         }
-        $output .= $sbox_NickSuffix . '</b>&nbsp;' . $content . '</div><br />' . "\n";
+        $output .= $sbox_NickSuffix . '&nbsp;' . $content . '</div><br />' . "\n";
         
         if (!file_exists($sbox_HistoryFile)) {
           // TODO: Prepare file ... HTML-header, stylesheet, etc.
@@ -226,24 +241,24 @@ if (!empty($_REQUEST['action'])) switch ($_REQUEST['action']) {
 // close header and open body
 echo '
 </head>
-<body>';
+<body class="windowbg2"><div class="windowbg2">';
 
-echo "\n" . '<div class="Odd"><b>[ ' . strftime($user_info['time_format'], forum_time(true)) . ' ]';
+echo "\n" . '<b>' . $sbox_DatePrefix . strftime($user_info['time_format'], forum_time(true)) . $sbox_DateSuffix;
 if ($refreshBlocked) {
-  echo ' [ <span class="Kill">' . $txt['sbox_RefreshBlocked'] . '</span> ]';
+  echo ' ' . $txt['sbox_RefreshBlocked'];
 }
-echo '</b></div>';
+echo '</b><br />';
 
 if ($context['user']['is_admin']) {
   if ($modSettings['sbox_DoHistory'] == '1') {
-    echo "\n" . '<div class="Odd">';
+    echo "\n";
     if (file_exists($sbox_HistoryFile)) {
       echo '[<a href="' . str_replace($boarddir, $boardurl, $sbox_HistoryFile) . '" target="_blank">' . $txt['sbox_History'] . '</a>]';
       echo ' [<a href="' . $_SERVER['PHP_SELF'] . '?action=clearhist" class="Kill" onClick="return clearHist();">' . $txt['sbox_HistoryClear'] . '</a>]';
     } else {
       echo '[' . $txt['sbox_HistoryNotFound'] . ']';
     }
-    echo '</div>';
+    echo '';
   }
 }
 
@@ -295,7 +310,7 @@ if(mysql_num_rows($result)) {
 
     // display shouting message and use a different color each second row
     if ($count % 2 == 0) {
-      $divclass = 'Odd';
+      $divclass = 'windowbg2';
     } else {
       $divclass = 'Even';
     }
@@ -326,7 +341,7 @@ if(mysql_num_rows($result)) {
     
     $wd = $txt['days_short'][date('w', $date)];
     $ts = date('H:i', $date);
-    $ds = $wd . '&nbsp;|&nbsp;' . $ts;
+    $ds = $sbox_DatePrefix . $wd . $sbox_DateSeparator . $ts . $sbox_DateSuffix;
     
     // highlight username, realname and make sound
     if (!empty($context['user']['name']) && strpos($content, $context['user']['name']) !== false) {
@@ -338,15 +353,15 @@ if(mysql_num_rows($result)) {
       $content = str_replace($user_info['username'], '<b><u>' . $user_info['username'] . '</u></b>', $content);
     }
     
-    echo '[&nbsp;' . $ds . '&nbsp;]&nbsp;<b>' . $sbox_NickPrefix;
+    echo $ds . '&nbsp;' . $sbox_NickPrefix;
     if ($name > 0) {
-      if ($modSettings['sbox_UserLinksVisible'] == '1') echo '<a href="' . $scripturl . '?action=profile;u=' . $name . '" target="_top" class="' . $divclass . '">';
-      echo ((!empty($row['realName']))?$row['realName']:$row['memberName']);
-      if ($modSettings['sbox_UserLinksVisible'] == '1') echo '</a>';
+      if ($modSettings['sbox_UserLinksVisible'] == '1') echo '<a href="' . $scripturl . '?action=profile;u=' . $name . '" target="_top" style="text-decoration: none;"><span class="' . $divclass . '">';
+      echo $sbox_NickInnerPrefix . ((!empty($row['realName']))?$row['realName']:$row['memberName']) . $sbox_NickInnerSuffix;
+      if ($modSettings['sbox_UserLinksVisible'] == '1') echo '</span></a>';
     } else {
-      echo $txt['sbox_Guest'] . '-' . base_convert($piph, 16, 36);
+      echo $sbox_NickInnerPrefix . $txt['sbox_Guest'] . '-' . base_convert($piph, 16, 36) . $sbox_NickInnerSuffix;
     }
-    echo $sbox_NickSuffix . '</b>&nbsp;' . $content . '</div>';
+    echo $sbox_NickSuffix . '&nbsp;' . $content . '</div>';
   }
   if (($modSettings['sbox_EnableSounds']) && ($alert === true) && ($div === true)) {
     echo '<embed src="' . $boardurl . '/chat-inbound_GSM.wav" hidden="true" autostart="true" loop="false"></embed>' . "\n";
@@ -354,5 +369,6 @@ if(mysql_num_rows($result)) {
 }
 
 ?>
+</div>
 </body>
 </html>

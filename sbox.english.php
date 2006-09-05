@@ -4,7 +4,7 @@
 $txt['sbox_ModTitle'] = 'SMF Shoutbox';
 $txt['sbox_KillShout'] = 'Do you want to kill this shout?';
 $txt['sbox_Refresh'] = 'Refresh';
-$txt['sbox_RefreshBlocked'] = 'Automatic refresh disabled due to inactivity';
+$txt['sbox_RefreshBlocked'] = '[<span class="Kill">Automatic refresh disabled due to inactivity</span>]';
 $txt['sbox_History'] = 'History';
 $txt['sbox_HistoryClear'] = 'Clear history';
 $txt['sbox_HistoryNotFound'] = 'No history found.';
@@ -31,12 +31,10 @@ $txt['sbox_RefreshTime'] = 'Refresh time (secs)';
 $txt['sbox_BlockRefresh'] = 'Block Refresh after inactivity (' . $modSettings['lastActive'] . ' mins)';
 $txt['sbox_EnableSounds'] = 'Enable sounds';
 
-$txt['sbox_FontFamily1'] = '1. Font family';
-$txt['sbox_FontFamily2'] = '2. Font family';
-$txt['sbox_TextSize1'] = '1. Font size';
-$txt['sbox_TextColor1'] = '1. Font color';
-$txt['sbox_TextSize2'] = '2. Font size';
-$txt['sbox_TextColor2'] = '2. Font color';
-$txt['sbox_BackgroundColor'] = 'Background color';
+$txt['sbox_FontFamily'] = 'Font family';
+$txt['sbox_TextSize'] = 'Font size';
+$txt['sbox_TextColor1'] = '2. Font color for light themes';
+$txt['sbox_DarkThemes'] = 'List of dark themes<div class="smalltext">(Directory names separated by vertical line, e.g. "BlackDaySMF1|blood_and_black")</div>';
+$txt['sbox_TextColor2'] = '2. Font color for dark themes';
 
 ?>

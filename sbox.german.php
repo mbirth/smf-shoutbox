@@ -4,7 +4,7 @@
 $txt['sbox_ModTitle'] = 'SMF Shoutbox';
 $txt['sbox_KillShout'] = 'Diesen Shout löschen?';
 $txt['sbox_Refresh'] = 'Neu laden';
-$txt['sbox_RefreshBlocked'] = 'Automatische Aktualisierung wegen Inaktivit&auml;t ausgeschaltet';
+$txt['sbox_RefreshBlocked'] = '[<span class="Kill">Automatische Aktualisierung wegen Inaktivit&auml;t ausgeschaltet</span>]';
 $txt['sbox_History'] = 'Verlauf';
 $txt['sbox_HistoryClear'] = 'Verlauf l&ouml;schen';
 $txt['sbox_HistoryNotFound'] = 'Kein Verlauf gefunden.';
@@ -31,12 +31,10 @@ $txt['sbox_RefreshTime'] = 'Aktualisierungsintervall (sec)';
 $txt['sbox_BlockRefresh'] = 'Aktualisierung nach Inaktivit&auml;t stoppen (' . $modSettings['lastActive'] . ' min)';
 $txt['sbox_EnableSounds'] = 'Kl&auml;nge abspielen';
 
-$txt['sbox_FontFamily1'] = '1. Schriftart';
-$txt['sbox_FontFamily2'] = '2. Schriftart';
-$txt['sbox_TextSize1'] = '1. Schriftgr&ouml;&szlig;e';
-$txt['sbox_TextColor1'] = '1. Schriftfarbe';
-$txt['sbox_TextSize2'] = '2. Schriftgr&ouml;&szlig;e';
-$txt['sbox_TextColor2'] = '2. Schriftfarbe';
-$txt['sbox_BackgroundColor'] = 'Hintergrundfarbe';
+$txt['sbox_FontFamily'] = 'Schriftart';
+$txt['sbox_TextSize'] = 'Schriftgr&ouml;&szlig;e';
+$txt['sbox_TextColor1'] = '2. Schriftfarbe f&uuml;r helle Themes';
+$txt['sbox_DarkThemes'] = 'Liste dunkler Themes<div class="smalltext">(Verzeichnisnamen getrennt durch "|", z.B. "BlackDaySMF1|blood_and_black")</div>';
+$txt['sbox_TextColor2'] = '2. Schriftfarbe f&uuml;r dunkle Themes';
 
 ?>
