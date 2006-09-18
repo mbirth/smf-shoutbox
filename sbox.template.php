@@ -35,6 +35,20 @@ function template_shout_box() {
       	if (document.sbox)
       		document.sbox.sboxText.value="";
       }
+      
+      function submitSbox() {
+        pretxt = \'' . $txt['sbox_TypeShout'] . '\';
+        prelen = pretxt.length;
+        if (document.sbox.sboxText.value == pretxt) return false;
+        xval = document.sbox.sboxText.value;
+        while (xval.indexOf(pretxt) >= 0) {
+          xpos = xval.indexOf(pretxt);
+          xval = xval.substring(0, xpos) + xval.substring(xpos+prelen, xval.length);
+        }
+        document.sbox.sboxText.value = xval;
+        setTimeout(\'clearSbox()\', 500);
+        return true;
+      }
   	// ]]></script>
 	<div class="tborder"', $context['browser']['needs_size_fix'] && !$context['browser']['is_ie6'] ? ' style="width: 100%;"' : '', '>
 		<div class="catbg" style="padding: 6px; vertical-align: middle; text-align: center;">		
@@ -47,7 +61,7 @@ function template_shout_box() {
 						<table width="100%" border="0" cellspacing="1" cellpadding="0">
 							<tr>
 								<td align="center" valign="middle">
-     	  					<form name="sbox" action="' . $sourceurl . '/sboxDB.php?action=write" method="post" target="sboxframe" style="margin: 0;" onsubmit="if (this.sboxText.value == \'' . $txt['sbox_TypeShout'] . '\') return false; else setTimeout(\'clearSbox()\', 500);" enctype="multipart/form-data" accept-charset="' . $context['character_set'] . '">
+     	  					<form name="sbox" action="' . $sourceurl . '/sboxDB.php?action=write" method="post" target="sboxframe" style="margin: 0;" onSubmit="return submitSbox();" enctype="multipart/form-data" accept-charset="' . $context['character_set'] . '">
    									<a href="' . $sourceurl . '/sboxDB.php?" target="sboxframe"><img src="'.$imgdir.'sbox_refresh.gif" border="0" width="16" height="17" align="absmiddle" alt="' . $txt['sbox_Refresh'] . '" /></a>';
 	if ((!$context['user']['is_guest']) || ($modSettings['sbox_GuestAllowed'] == "1")) {
 	  echo '

@@ -88,7 +88,7 @@ function missinghtmlentities($text) {
   $result = '';
   foreach ($split as $s) {
     if (substr($s, 0, 2) != '&#' || substr($s, -1, 1) != ';') {
-      $result .= htmlentities($s, ENT_NOQUOTES, $context['character_set']);
+      $result .= @htmlentities($s, ENT_NOQUOTES, $context['character_set']);
     } else {
       $result .= $s;
     }
