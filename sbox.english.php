@@ -10,6 +10,7 @@ $txt['sbox_HistoryClear'] = 'Clear history';
 $txt['sbox_HistoryNotFound'] = 'No history found.';
 $txt['sbox_Guest'] = 'Guest';
 $txt['sbox_TypeShout'] = '<Type your message and press ENTER>';
+$txt['sbox_Login'] = 'Please <a href="' . $scripturl . '?action=login">login</a> or <a href="' . $scripturl . '?action=register">register</a> to participate.';
 
 // Settings
 $txt['sbox_Visible'] = 'Shoutbox is visible';

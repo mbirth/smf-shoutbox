@@ -83,12 +83,15 @@ function locked_filewrite($filename, $data, $timeLimit = 300000, $staleAge = 5) 
 // END: BORROWED FROM http://de2.php.net/manual/en/function.flock.php
 
 function missinghtmlentities($text) {
+  global $context;
   // entitify missing characters, ignore entities already there (Unicode / UTF8) (hopefully in &#123;-notation)
   $split = preg_split('/(&#[\d]+;)/', $text, -1, PREG_SPLIT_DELIM_CAPTURE);
   $result = '';
   foreach ($split as $s) {
     if (substr($s, 0, 2) != '&#' || substr($s, -1, 1) != ';') {
-      $result .= @htmlentities($s, ENT_NOQUOTES, $context['character_set']);
+      // filter out "ANSI_X3.4-1968" charset, which just means plain old ASCII ... replace by UTF-8
+      if (strpos($context['character_set'], 'ANSI_') !== false) $charset = 'UTF-8'; else $charset = $context['character_set'];
+      $result .= @htmlentities($s, ENT_NOQUOTES, $charset);
     } else {
       $result .= $s;
     }
@@ -165,6 +168,7 @@ if (!empty($_REQUEST['action'])) switch ($_REQUEST['action']) {
  
   case 'write':
     if  (((!$context['user']['is_guest']) || ($modSettings['sbox_GuestAllowed'] == '1')) && !empty($_REQUEST['sboxText'])) {
+      is_not_banned(true);  // die with message, if user is banned, let him read everything though
       $content = $_REQUEST['sboxText'];
       // get current timestamp
       $date = time();

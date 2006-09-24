@@ -10,6 +10,7 @@ $txt['sbox_HistoryClear'] = 'Verlauf l&ouml;schen';
 $txt['sbox_HistoryNotFound'] = 'Kein Verlauf gefunden.';
 $txt['sbox_Guest'] = 'Gast';
 $txt['sbox_TypeShout'] = '<Geben Sie Ihre Nachricht ein und drücken Sie ENTER>';
+$txt['sbox_Login'] = 'Bitte <a href="' . $scripturl . '?action=login">einloggen</a> oder <a href="' . $scripturl . '?action=register">registrieren</a> zum Teilnehmen.';
 
 // Einstellungen
 $txt['sbox_Visible'] = 'Shoutbox ist sichtbar';

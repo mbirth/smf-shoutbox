@@ -67,6 +67,9 @@ function template_shout_box() {
 	  echo '
 			      			  <input type="hidden" name="ts" value="'.forum_time(true).'">
 										<input class="windowbg2" type="text" name="sboxText" size="100" maxlength="320" onFocus="if (this.value==\'' . $txt['sbox_TypeShout'] . '\') this.value = \'\';" onBlur="if (this.value==\'\') this.value=\'' . $txt['sbox_TypeShout'] . '\';" />&nbsp;<input type="submit" class="input" value="&nbsp;shout&nbsp;" />';
+	} else {
+	  // guest is not allowed to shout ~~> show message
+	  echo $txt['sbox_Login'];
 	}
   echo '
           				</form>
@@ -204,7 +207,7 @@ function sbox_printSmileys() {
 		// If the smileys popup is to be shown... show it!
 		if (!empty($context['smileys']['popup']))
 			echo '
-					<a href="javascript:moreSmileys();">[', $txt['more_smileys'], ']</a>';
+					<a href="javascript:sbox_moreSmileys();">[', $txt['more_smileys'], ']</a>';
 	}
 
 	// If there are additional smileys then ensure we provide the javascript for them.
@@ -234,7 +237,7 @@ function sbox_printSmileys() {
 		echo '];
 				var smileyPopupWindow;
 
-				function moreSmileys()
+				function sbox_moreSmileys()
 				{
 					var row, i;
 
