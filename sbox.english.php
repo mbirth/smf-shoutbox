@@ -4,6 +4,8 @@
 $txt['sbox_ModTitle'] = 'SMF Shoutbox';
 $txt['sbox_KillShout'] = 'Do you want to kill this shout?';
 $txt['sbox_Refresh'] = 'Refresh';
+$txt['sbox_RefreshEnable'] = '<b>ENABLE refresh</b>';
+$txt['sbox_RefreshDisable'] = 'Disable refresh';
 $txt['sbox_RefreshBlocked'] = '[<span class="Kill">Automatic refresh disabled due to inactivity</span>]';
 $txt['sbox_History'] = 'History';
 $txt['sbox_HistoryClear'] = 'Clear history';

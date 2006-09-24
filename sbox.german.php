@@ -4,6 +4,8 @@
 $txt['sbox_ModTitle'] = 'SMF Shoutbox';
 $txt['sbox_KillShout'] = 'Diesen Shout löschen?';
 $txt['sbox_Refresh'] = 'Neu laden';
+$txt['sbox_RefreshEnable'] = '<b>Automatische Aktualisierung EINSCHALTEN</b>';
+$txt['sbox_RefreshDisable'] = 'Automatische Aktualisierung ausschalten';
 $txt['sbox_RefreshBlocked'] = '[<span class="Kill">Automatische Aktualisierung wegen Inaktivit&auml;t ausgeschaltet</span>]';
 $txt['sbox_History'] = 'Verlauf';
 $txt['sbox_HistoryClear'] = 'Verlauf l&ouml;schen';

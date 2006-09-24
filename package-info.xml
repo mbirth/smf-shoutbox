@@ -4,7 +4,7 @@
   <name>SMF Shoutbox</name>
   <id>Deep:SMF_Shoutbox</id>
   <type>modification</type>
-  <version>1.14</version>
+  <version>1.15</version>
 
   <install for="1.1 RC2, 1.1 RC3">
     <require-file name="sbox.php" destination="$sourcedir" />
@@ -84,6 +84,13 @@ PLEASE UNINSTALL ANY LANGUAGE PACK FOR SHOUTBOX BEFORE UPGRADING!]]></readme>
     <require-file name="chat-inbound_GSM.wav" destination="$boarddir" />
     <code type="file">sbox_upgrade.php</code>
     <modification type="file">sbox_latest.xml</modification>
+  </upgrade>
+  <upgrade from="1.14" for="1.1 RC2, 1.1 RC3">
+    <readme type="inline"><![CDATA[Thanks for trying the shiny new update feature. Although the Package manager might show you an error, the upgrade should work.]]></readme>
+    <require-file name="sboxDB.php" destination="$sourcedir" />
+    <require-file name="sbox.english.php" destination="$languagedir" />
+    <require-file name="sbox.german.php" destination="$languagedir" />
+    <require-file name="sbox.template.php" destination="$themedir" />
   </upgrade>
 
   <uninstall for="1.1 RC2, 1.1 RC3">

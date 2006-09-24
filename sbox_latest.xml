@@ -17,7 +17,7 @@
 <modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
   <!-- This information needs to be the same as that in the package-info.xml. -->
   <id>Deep:SMF_Shoutbox</id>
-  <version>1.14</version>
+  <version>1.15</version>
 
   <!-- Edit BoardIndex.template.php in the SMF Default Theme. -->
   <file name="$themedir/BoardIndex.template.php">

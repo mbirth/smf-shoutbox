@@ -111,7 +111,7 @@ $delta = time() - $row['time'];
 if ((!empty($_REQUEST['action'])) && ($_REQUEST['action'] == 'write')) $dontblock = true; else $dontblock = false;
 if (($delta > $modSettings['lastActive']*60) && ($modSettings['sbox_BlockRefresh'] == '1') && (!$dontblock)) {
   $refreshBlocked = true;
-} else {
+} elseif (empty($_REQUEST['action']) || ($_REQUEST['action'] != 'stoprefresh')) {
   echo '
   <meta http-equiv="refresh" content="' . $modSettings['sbox_RefreshTime'] . ';URL=sboxDB.php?ts=' . time() . '">';
 }
@@ -266,6 +266,14 @@ if ($context['user']['is_admin']) {
   }
 }
 
+if (!$refreshBlocked) {
+  if (!empty($_REQUEST['action']) && ($_REQUEST['action'] == 'stoprefresh')) {
+    echo ' [<a href="' . $_SERVER['PHP_SELF'] . '">' . $txt['sbox_RefreshEnable'] . '</a>]';
+  } else {
+    echo ' [<a href="' . $_SERVER['PHP_SELF'] . '?action=stoprefresh">' . $txt['sbox_RefreshDisable'] . '</a>]';
+  }
+}
+
 /*
 if (!empty($settings['display_who_viewing'])) {
   echo '<small>';
@@ -297,6 +305,7 @@ if(mysql_num_rows($result)) {
     censorText($content);
     $content = missinghtmlentities($content);
     if ($modSettings['sbox_AllowBBC'] == '1' && ($name > 0 || $modSettings['sbox_GuestBBC'] == '1')) {
+      $content = preg_replace('/(\[img)(.*?)(\[\/img\])/i', '', $content);   // filter out [img]-BBC
       $content = parse_bbc($content);
     }
 
