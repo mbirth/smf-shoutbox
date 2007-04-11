@@ -4,7 +4,7 @@
   <name>SMF Shoutbox</name>
   <id>Deep:SMF_Shoutbox</id>
   <type>modification</type>
-  <version>1.15</version>
+  <version>1.15b</version>
 
   <install for="1.1, 1.1.1, 1.1.2, 1.1.3">
     <require-file name="sbox.php" destination="$sourcedir" />

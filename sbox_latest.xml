@@ -175,8 +175,20 @@ $helptxt['sbox_DarkThemes'] = 'Geben Sie hier die Verzeichnisnamen Ihrer dunkler
   <!-- Edit ModSettings.php and add settings stuff. -->
   <file name="$sourcedir/ModSettings.php">
     <operation>
-      <search position="before"><![CDATA[
-		'karma' => 'ModifyKarmaSettings',
+      <search position="after"><![CDATA[
+	);
+
+	// By default do the basic settings.
+]]></search>
+      <add><![CDATA[
+		'sbox' => 'ModifySboxSettings',
+]]></add>
+    </operation>
+    <operation>
+      <search position="after"><![CDATA[
+	);
+
+	// Default to core (I assume)
 ]]></search>
       <add><![CDATA[
 		'sbox' => 'ModifySboxSettings',
