@@ -39,10 +39,10 @@ function template_shout_box() {
       function submitSbox() {
         pretxt = \'' . $txt['sbox_TypeShout'] . '\';
         prelen = pretxt.length;
-        if (document.sbox.sboxText.value == pretxt) return false;
         xval = document.sbox.sboxText.value;
-        while (xval.indexOf(pretxt) >= 0) {
-          xpos = xval.indexOf(pretxt);
+        if (xval.toLowerCase() == pretxt.toLowerCase()) return false;
+        while (xval.toLowerCase().indexOf(pretxt.toLowerCase()) >= 0) {
+          xpos = xval.toLowerCase().indexOf(pretxt.toLowerCase());
           xval = xval.substring(0, xpos) + xval.substring(xpos+prelen, xval.length);
         }
         document.sbox.sboxText.value = xval;
