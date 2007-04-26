@@ -41,9 +41,11 @@ function template_shout_box() {
         prelen = pretxt.length;
         xval = document.sbox.sboxText.value;
         if (xval.toLowerCase() == pretxt.toLowerCase()) return false;
-        while (xval.toLowerCase().indexOf(pretxt.toLowerCase()) >= 0) {
+        ctr = 0;
+        while (xval.toLowerCase().indexOf(pretxt.toLowerCase()) >= 0 && ctr < 8) {
           xpos = xval.toLowerCase().indexOf(pretxt.toLowerCase());
           xval = xval.substring(0, xpos) + xval.substring(xpos+prelen, xval.length);
+          ctr++;
         }
         document.sbox.sboxText.value = xval;
         setTimeout(\'clearSbox()\', 500);

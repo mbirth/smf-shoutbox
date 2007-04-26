@@ -4,7 +4,7 @@
   <name>SMF Shoutbox</name>
   <id>Deep:SMF_Shoutbox</id>
   <type>modification</type>
-  <version>1.15b</version>
+  <version>1.16</version>
 
   <install for="1.1, 1.1.1, 1.1.2, 1.1.3">
     <require-file name="sbox.php" destination="$sourcedir" />
@@ -96,6 +96,10 @@ PLEASE UNINSTALL ANY LANGUAGE PACK FOR SHOUTBOX BEFORE UPGRADING!]]></readme>
     <require-file name="sbox.english.php" destination="$languagedir" />
     <require-file name="sbox.german.php" destination="$languagedir" />
     <require-file name="sbox.french.php" destination="$languagedir" />
+    <require-file name="sbox.template.php" destination="$themedir" />
+  </upgrade>
+  <upgrade from="1.15b" for="1.1, 1.1.1, 1.1.2, 1.1.3">
+    <readme type="inline"><![CDATA[Thanks for trying the shiny new update feature. Although the Package manager might show you an error, the upgrade should work.]]></readme>
     <require-file name="sbox.template.php" destination="$themedir" />
   </upgrade>
 
