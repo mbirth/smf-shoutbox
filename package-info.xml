@@ -4,9 +4,9 @@
   <name>SMF Shoutbox</name>
   <id>Deep:SMF_Shoutbox</id>
   <type>modification</type>
-  <version>1.16</version>
+  <version>1.17</version>
 
-  <install for="1.1, 1.1.1, 1.1.2, 1.1.3">
+  <install>
     <require-file name="sbox.php" destination="$sourcedir" />
     <require-file name="sboxDB.php" destination="$sourcedir" />
     <require-file name="sbox.english.php" destination="$languagedir" />
@@ -21,12 +21,12 @@
 
     Originally written By Deep (diem4@gmx.net), inspired by Matthew Wolf (a.k.a Grudge)
     Heavily improved by Markus Birth (mbirth@webwriters.de)
-    Copyright 2006 - Neither this package or any of it's contents may be distributed without authorisation.
+    Copyright 2006-2008 - Neither this package or any of it's contents may be distributed without authorisation.
     ]]></readme>
     <modification type="file">sbox_latest.xml</modification>
   </install>
 
-  <upgrade from="1.10" for="1.1, 1.1.1, 1.1.2, 1.1.3">
+  <upgrade from="1.10">
     <readme type="inline"><![CDATA[Thanks for trying the shiny new update feature. Although the Package manager might show you an error, the upgrade should work.
 
 PLEASE UNINSTALL ANY LANGUAGE PACK FOR SHOUTBOX BEFORE UPGRADING!]]></readme>
@@ -42,7 +42,7 @@ PLEASE UNINSTALL ANY LANGUAGE PACK FOR SHOUTBOX BEFORE UPGRADING!]]></readme>
     <code type="file">sbox_upgrade.php</code>
     <modification type="file">sbox_latest.xml</modification>
   </upgrade>
-  <upgrade from="1.11" for="1.1, 1.1.1, 1.1.2, 1.1.3">
+  <upgrade from="1.11">
     <readme type="inline"><![CDATA[Thanks for trying the shiny new update feature. Although the Package manager might show you an error, the upgrade should work.
 
 PLEASE UNINSTALL ANY LANGUAGE PACK FOR SHOUTBOX BEFORE UPGRADING!]]></readme>
@@ -58,7 +58,7 @@ PLEASE UNINSTALL ANY LANGUAGE PACK FOR SHOUTBOX BEFORE UPGRADING!]]></readme>
     <code type="file">sbox_upgrade.php</code>
     <modification type="file">sbox_latest.xml</modification>
   </upgrade>
-  <upgrade from="1.12" for="1.1, 1.1.1, 1.1.2, 1.1.3">
+  <upgrade from="1.12">
     <readme type="inline"><![CDATA[Thanks for trying the shiny new update feature. Although the Package manager might show you an error, the upgrade should work.
 
 PLEASE UNINSTALL ANY LANGUAGE PACK FOR SHOUTBOX BEFORE UPGRADING!]]></readme>
@@ -74,7 +74,7 @@ PLEASE UNINSTALL ANY LANGUAGE PACK FOR SHOUTBOX BEFORE UPGRADING!]]></readme>
     <code type="file">sbox_upgrade.php</code>
     <modification type="file">sbox_latest.xml</modification>
   </upgrade>
-  <upgrade from="1.13" for="1.1, 1.1.1, 1.1.2, 1.1.3">
+  <upgrade from="1.13">
     <readme type="inline"><![CDATA[Thanks for trying the shiny new update feature. Although the Package manager might show you an error, the upgrade should work.
 
 PLEASE UNINSTALL ANY LANGUAGE PACK FOR SHOUTBOX BEFORE UPGRADING!]]></readme>
@@ -90,7 +90,7 @@ PLEASE UNINSTALL ANY LANGUAGE PACK FOR SHOUTBOX BEFORE UPGRADING!]]></readme>
     <code type="file">sbox_upgrade.php</code>
     <modification type="file">sbox_latest.xml</modification>
   </upgrade>
-  <upgrade from="1.14" for="1.1, 1.1.1, 1.1.2, 1.1.3">
+  <upgrade from="1.14">
     <readme type="inline"><![CDATA[Thanks for trying the shiny new update feature. Although the Package manager might show you an error, the upgrade should work.]]></readme>
     <require-file name="sboxDB.php" destination="$sourcedir" />
     <require-file name="sbox.english.php" destination="$languagedir" />
@@ -98,12 +98,12 @@ PLEASE UNINSTALL ANY LANGUAGE PACK FOR SHOUTBOX BEFORE UPGRADING!]]></readme>
     <require-file name="sbox.french.php" destination="$languagedir" />
     <require-file name="sbox.template.php" destination="$themedir" />
   </upgrade>
-  <upgrade from="1.15b" for="1.1, 1.1.1, 1.1.2, 1.1.3">
+  <upgrade from="1.15b">
     <readme type="inline"><![CDATA[Thanks for trying the shiny new update feature. Although the Package manager might show you an error, the upgrade should work.]]></readme>
     <require-file name="sbox.template.php" destination="$themedir" />
   </upgrade>
 
-  <uninstall for="1.1, 1.1.1, 1.1.2, 1.1.3">
+  <uninstall>
     <readme type="inline">Uninstall will remove all the changes made by the shoutbox.</readme>
     <modification type="file" reverse="true">sbox_latest.xml</modification>
     <remove-file name="$sourcedir/sbox.php" />

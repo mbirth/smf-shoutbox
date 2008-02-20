@@ -17,7 +17,7 @@
 <modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
   <!-- This information needs to be the same as that in the package-info.xml. -->
   <id>Deep:SMF_Shoutbox</id>
-  <version>1.16</version>
+  <version>1.17</version>
 
   <!-- Edit BoardIndex.template.php in the SMF Default Theme. -->
   <file name="$themedir/BoardIndex.template.php">
@@ -121,7 +121,7 @@ function sbox() {
 //SMF Shoutbox
 $helptxt['sbox_Visible'] = 'Here you can decide wether the shoutbox is visible at all or not.';
 $helptxt['sbox_ModsRule'] = 'This enables anyone who has the <i>moderate_board</i> permission on at least one board, to delete shouts.';
-$helptxt['sbox_DoHistory'] = 'Defines whether all shouts should be written to a file so that an Administrator can check what was going on.';
+$helptxt['sbox_DoHistory'] = 'Defines whether all shouts should be written to a file so that an Administrator can check what was going on. The filename is defined in the sboxDB.php. <b>Change it to a path where only Admins have access to!</b>';
 
 $helptxt['sbox_GuestVisible'] = 'Defines whether the Shoutbox is visible to guests at all.';
 $helptxt['sbox_GuestAllowed'] = 'Here you can decide whether guests are allowed to post new shouts.';
@@ -151,7 +151,7 @@ $helptxt['sbox_DarkThemes'] = 'Enter all of your dark theme\'s directories separ
 //SMF Shoutbox
 $helptxt['sbox_Visible'] = 'Hier k&ouml;nnen Sie einstellen, ob die Shoutbox sichtbar ist oder nicht. Diese Einstellung gilt f&uuml;r ALLE Benutzer.';
 $helptxt['sbox_ModsRule'] = 'Dies erlaubt jedem, der die <i>moderate_board</i>-Berechtigung auf mindestens einem Board hat, Shouts zu l&ouml;schen.';
-$helptxt['sbox_DoHistory'] = 'Legt fest, ob alle Shouts auch in eine Verlaufsdatei geschrieben werden sollen, so dass ein Administrator angebliche Vorf&auml;lle nachpr&uuml;fen kann.';
+$helptxt['sbox_DoHistory'] = 'Legt fest, ob alle Shouts auch in eine Verlaufsdatei geschrieben werden sollen, so dass ein Administrator angebliche Vorf&auml;lle nachpr&uuml;fen kann. Der Dateiname wird in der sboxDB.php festgelegt. <b>Bitte auf einen Pfad setzen, wo nur der Administrator Zugriff hat!</b>';
 
 $helptxt['sbox_GuestVisible'] = 'Hiermit k&ouml;nnen Sie festlegen, ob G&auml;ste die Shoutbox &uuml;berhaupt sehen k&ouml;nnen oder nicht.';
 $helptxt['sbox_GuestAllowed'] = 'Hier k&ouml;nnen Sie einstellen, ob G&auml;ste die Shoutbox benutzen d&uuml;rfen.';

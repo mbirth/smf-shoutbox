@@ -8,7 +8,11 @@ require("../SSI.php");
 if (!defined('SMF'))
   die('Hacking attempt...');
 
+loadLanguage('Errors');
 loadLanguage('sbox');
+
+if ($context['user']['is_guest'] && $modSettings['sbox_GuestVisible'] != '1')
+  die($txt[1] . ' ' . $txt['sbox_Login']);
 
 /***[ BEGIN CONFIGURATION ]***************************************************/
 
@@ -27,14 +31,14 @@ $sbox_DateSuffix = ']';
 
 // BEGIN: BORROWED FROM http://de2.php.net/manual/en/function.flock.php
 /*
- * I hope this is usefull. 
- * If mkdir() is atomic, 
+ * I hope this is usefull.
+ * If mkdir() is atomic,
  * then we do not need to worry about race conditions while trying to make the lockDir,
  * unless of course we're writing to NFS, for which this function will be useless.
  * so thats why i pulled out the usleep(rand()) piece from the last version
  *
  * Again, its important to tailor some of the parameters to ones indivdual usage
- * I set the default $timeLimit to 3/10th's of a second (maximum time allowed to achieve a lock), 
+ * I set the default $timeLimit to 3/10th's of a second (maximum time allowed to achieve a lock),
  * but if you're writing some extrememly large files, and/or your server is very slow, you may need to increase it.
  * Obviously, the $staleAge of the lock directory will be important to consider as well if the writing operations might take a while.
  * My defaults are extrememly general and you're encouraged to set your own
@@ -86,14 +90,15 @@ function missinghtmlentities($text) {
   global $context;
   // entitify missing characters, ignore entities already there (Unicode / UTF8) (hopefully in &#123;-notation)
   $split = preg_split('/(&#[\d]+;)/', $text, -1, PREG_SPLIT_DELIM_CAPTURE);
+  // filter out "ANSI_X3.4-1968" charset, which just means plain old ASCII ... replace by UTF-8
+  if (strpos($context['character_set'], 'ANSI_') !== false) $charset = 'UTF-8'; else $charset = $context['character_set'];
   $result = '';
   foreach ($split as $s) {
-    if (substr($s, 0, 2) != '&#' || substr($s, -1, 1) != ';') {
-      // filter out "ANSI_X3.4-1968" charset, which just means plain old ASCII ... replace by UTF-8
-      if (strpos($context['character_set'], 'ANSI_') !== false) $charset = 'UTF-8'; else $charset = $context['character_set'];
-      $result .= @htmlentities($s, ENT_NOQUOTES, $charset);
+    if (substr($s, 0, 2) == '&#' || substr($s, -1, 1) == ';') {
+      // Convert to std character and htmlentity-fy it again - to re-convert e.g. &#3c; to &lt; so that XSS isn't possible
+      $result .= @htmlentities(@html_entity_decode($s, ENT_NOQUOTES, $charset), ENT_NOQUOTES, $charset);
     } else {
-      $result .= $s;
+      $result .= @htmlentities($s, ENT_NOQUOTES, $charset);
     }
   }
   return $result;
@@ -103,7 +108,7 @@ function missinghtmlentities($text) {
 echo '<html xmlns="http://www.w3.org/1999/xhtml"' . ($context['right_to_left']?' dir="rtl"':'') . '>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=', $context['character_set'], '" />';
-  
+
 $result = db_query("SELECT time FROM {$db_prefix}sbox_content ORDER BY time DESC LIMIT 1", __FILE__, __LINE__);
 $row = mysql_fetch_assoc($result);
 $refreshBlocked = false;
@@ -136,7 +141,7 @@ echo '
     }
     // ]]></script>
   <style type="text/css">
-  
+
     .windowbg2 {
       font-family: ' . $modSettings['sbox_FontFamily'] . ';
       font-style: normal;
@@ -150,14 +155,14 @@ echo '
       font-weight: normal;
       text-decoration: none;
     }
-    
+
     body {
       width: 100%;
       padding: 0;
       margin: 0;
       border: 0;
     }
- 
+
     .Kill, A.Kill {
       color: #ff0000;
     }
@@ -165,42 +170,43 @@ echo '
 
 
 if (!empty($_REQUEST['action'])) switch ($_REQUEST['action']) {
- 
+
   case 'write':
     if  (((!$context['user']['is_guest']) || ($modSettings['sbox_GuestAllowed'] == '1')) && !empty($_REQUEST['sboxText'])) {
       is_not_banned(true);  // die with message, if user is banned, let him read everything though
       $content = $_REQUEST['sboxText'];
       // get current timestamp
       $date = time();
-    
+
       $posterip = $user_info['ip'];
       $pip = explode('.', $posterip);
       $piph = sprintf("%02s%02s%02s%02s", dechex($pip[0]), dechex($pip[1]), dechex($pip[2]), dechex($pip[3]));
-    
+
       // handle special characters
       $content = addslashes($piph . $content);
-    
+      $content = mysql_escape_string($content);
+
       // insert shout message into database
       $sql = "INSERT INTO " . $db_prefix . "sbox_content (ID_MEMBER, content, time) VALUES ('" . $context['user']['id'] . "', '" . $content . "', '$date')";
       db_query($sql, __FILE__, __LINE__);
-    
+
       // delete old shout messages (get id of last shouting and delete all shoutings as defined in settings
       $result = db_query("SELECT id FROM " . $db_prefix . "sbox_content WHERE ID_MEMBER='" . $context['user']['id'] . "' AND content='" . $content . "' AND time='$date'", __FILE__, __LINE__);
       $rows = mysql_fetch_assoc($result);
       $sql = 'DELETE FROM ' . $db_prefix . "sbox_content WHERE id < '" . ($rows["id"]-$modSettings['sbox_MaxLines']) . "'";
       db_query($sql, __FILE__, __LINE__);
-      
+
       // write into history if needed
       if ($modSettings['sbox_DoHistory'] == '1') {
         $ds = $sbox_DatePrefix . date('Y-m-d', $date) . $sbox_DateSeparator . date('H:i.s', $date) . $sbox_DateSuffix;
-        
+
         $content = stripslashes($content); // shouting content
         $content = substr($content, 8);
         $content = missinghtmlentities($content);
         if ($modSettings['sbox_AllowBBC'] == '1' && ($context['user']['id'] > 0 || $modSettings['sbox_GuestBBC'] == '1')) {
           $content = parse_bbc($content);
         }
-        
+
         $output = $ds . '&nbsp;' . $sbox_NickPrefix;
         if ($context['user']['id'] > 0) {
           $output .= '<a href="' . $scripturl . '?action=profile;u=' . $context['user']['id'] . '" target="_blank" class="' . $divclass . '">';
@@ -210,16 +216,16 @@ if (!empty($_REQUEST['action'])) switch ($_REQUEST['action']) {
           $output .= $sbox_NickInnerPrefix . 'Guest-' . base_convert($piph, 16, 36) . $sbox_NickInnerSuffix;
         }
         $output .= $sbox_NickSuffix . '&nbsp;' . $content . '</div><br />' . "\n";
-        
+
         if (!file_exists($sbox_HistoryFile)) {
           // TODO: Prepare file ... HTML-header, stylesheet, etc.
         }
-        
+
         locked_filewrite($sbox_HistoryFile, $output);
       }
     }
     break;
-   
+
   case 'clearhist':
     if ($context['user']['is_admin']) {
       if (file_exists($sbox_HistoryFile)) {
@@ -239,7 +245,7 @@ if (!empty($_REQUEST['action'])) switch ($_REQUEST['action']) {
       db_query($sql, __FILE__, __LINE__);
     }
     break;
-    
+
 }
 
 // close header and open body
@@ -288,7 +294,7 @@ if (!empty($settings['display_who_viewing'])) {
 // get shout messages out of database
 $result = db_query("
   SELECT *
-  FROM {$db_prefix}sbox_content AS sb 
+  FROM {$db_prefix}sbox_content AS sb
     LEFT JOIN {$db_prefix}members AS mem ON (mem.ID_MEMBER = sb.ID_MEMBER)
   ORDER BY id DESC, time ASC LIMIT " . $modSettings['sbox_MaxLines'], __FILE__, __LINE__);
 if(mysql_num_rows($result)) {
@@ -311,11 +317,11 @@ if(mysql_num_rows($result)) {
 
     if (!empty($_REQUEST['ts']) && !$div && $date<$_REQUEST['ts']) {
       if ($count > 0 && $modSettings['sbox_NewShoutsBar'] == '1') {
-        echo '<hr>' . "\n";
+        echo '<hr />' . "\n";
       }
       $div = true;
     }
-    
+
     if ($name != $lname) {
       $count++;           // increase counter
     }
@@ -347,15 +353,15 @@ if(mysql_num_rows($result)) {
 
     echo "\n" . '<div class="' . $divclass . '" style="color: #' . $colh . '">'; */
     echo "\n" . '<div class="' . $divclass . '">';
-    
+
     if ($context['user']['is_admin'] || ($modSettings['sbox_ModsRule'] && count(boardsAllowedTo('moderate_board'))>0)) {
       echo '[<a title="' . $txt['sbox_KillShout'] . '" class="Kill" onClick="return kill();" href="' . $_SERVER['PHP_SELF'] . '?action=kill&kill=' . $row['id'] . '">X</a>]';
     }
-    
+
     $wd = $txt['days_short'][date('w', $date)];
     $ts = date('H:i', $date);
     $ds = $sbox_DatePrefix . $wd . $sbox_DateSeparator . $ts . $sbox_DateSuffix;
-    
+
     // highlight username, realname and make sound
     if (!empty($context['user']['name']) && strpos($content, $context['user']['name']) !== false) {
       if ($div === false) $alert = true;
@@ -365,7 +371,7 @@ if(mysql_num_rows($result)) {
       if ($div === false) $alert = true;
       $content = str_replace($user_info['username'], '<b><u>' . $user_info['username'] . '</u></b>', $content);
     }
-    
+
     echo $ds . '&nbsp;' . $sbox_NickPrefix;
     if ($name > 0) {
       if ($modSettings['sbox_UserLinksVisible'] == '1') echo '<a href="' . $scripturl . '?action=profile;u=' . $name . '" target="_top" style="text-decoration: none;"><span class="' . $divclass . '">';
