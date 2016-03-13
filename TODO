@@ -1,0 +1,12 @@
+-filter out [IMG] (checkbox for enabling)
+-disallow BBcode for specific users (specify user-ids in settings)
+-version checking in settings panel? (grab from SMF's mod page)
+-UTF8-support
+-check: " appears as &quot;
+-check: Smileys not working when BBCode is disabled?
+-maybe: option to change "SMF Shoutbox" title
+-maybe: different shouts of different pages (if included several times)
+-maybe: option to show posts first-one-top
+-optimize XML-mod code to be more tolerant
+-check: shouting resets inactivity counter?
+-popout Shoutbox?

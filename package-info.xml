@@ -101,6 +101,7 @@ PLEASE UNINSTALL ANY LANGUAGE PACK FOR SHOUTBOX BEFORE UPGRADING!]]></readme>
   <upgrade from="1.15b">
     <readme type="inline"><![CDATA[Thanks for trying the shiny new update feature. Although the Package manager might show you an error, the upgrade should work.]]></readme>
     <require-file name="sbox.template.php" destination="$themedir" />
+    <require-file name="sboxDB.php" destination="$themedir" />
   </upgrade>
 
   <uninstall>
